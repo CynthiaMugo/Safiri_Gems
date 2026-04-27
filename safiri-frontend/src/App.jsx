@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
+import Home from "./pages/Home"
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
     Safiri Gems Website
       </h1>
       </div>
+      <Home />
     </>
   )
 }
