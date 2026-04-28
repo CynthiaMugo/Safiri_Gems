@@ -1,6 +1,6 @@
 import { useCart } from "../context/CartContext";
 
-function ProductCard({ product }) {
+function ProductCard({ product, showActions = true }) {
   const { addToCart } = useCart();
 
   return (
@@ -17,21 +17,25 @@ function ProductCard({ product }) {
         </span>
       </div>
 
-      <div className="p-5">
+      <div className="p-5 text-center">
         <h3 className="text-lg font-medium text-[#5a4a42]">
           {product.name}
         </h3>
 
-        <p className="text-sm text-[#7a6a61] mt-1">
-          KSh {product.price.toLocaleString()}
-        </p>
+        {showActions && (
+          <>
+            <p className="text-sm text-[#7a6a61] mt-1">
+              KSh {product.price.toLocaleString()}
+            </p>
 
-        <button
-          onClick={() => addToCart(product)}
-          className="mt-4 w-full rounded-full border border-[#c2a67a] text-[#5a4a42] py-2 text-sm hover:bg-[#c2a67a] hover:text-white transition"
-        >
-          Add to Cart
-        </button>
+            <button
+              onClick={() => addToCart(product)}
+              className="mt-4 w-full rounded-full border border-[#c2a67a] text-[#5a4a42] py-2 text-sm hover:bg-[#c2a67a] hover:text-white transition"
+            >
+              Add to Cart
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

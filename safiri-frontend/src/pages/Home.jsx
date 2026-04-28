@@ -21,6 +21,8 @@ function Home() {
         eyebrow="Featured Pieces"
         title="A First Look at Safiri Gems"
         description="A soft preview of elegant pieces selected to complement your everyday style."
+        showActions={false}
+        showViewAllButton={true}
       />
       <CategoryPreview />
       <AboutPreview />
