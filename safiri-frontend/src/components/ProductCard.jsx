@@ -1,4 +1,8 @@
+import { useCart } from "../context/CartContext";
+
 function ProductCard({ product }) {
+  const { addToCart } = useCart();
+
   return (
     <div className="group bg-white/70 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
       <div className="relative overflow-hidden">
@@ -22,8 +26,11 @@ function ProductCard({ product }) {
           KSh {product.price.toLocaleString()}
         </p>
 
-        <button className="mt-4 w-full rounded-full border border-[#c2a67a] text-[#5a4a42] py-2 text-sm hover:bg-[#c2a67a] hover:text-white transition">
-          View Details
+        <button
+          onClick={() => addToCart(product)}
+          className="mt-4 w-full rounded-full border border-[#c2a67a] text-[#5a4a42] py-2 text-sm hover:bg-[#c2a67a] hover:text-white transition"
+        >
+          Add to Cart
         </button>
       </div>
     </div>
