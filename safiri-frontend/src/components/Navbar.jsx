@@ -1,18 +1,19 @@
+import { Link } from "react-router-dom";
 import { ShoppingBag, Search } from "lucide-react";
 
 function Navbar() {
   return (
     <nav className="flex justify-between items-center px-6 py-4 bg-[#f8f5f2]">
       
-      <h1 className="text-xl font-semibold tracking-wide">
+      <Link to="/" className="text-xl font-semibold">
         Safiri Gems
-      </h1>
+      </Link>
 
       <ul className="hidden md:flex gap-8 text-sm">
-        <li className="cursor-pointer hover:text-[#c2a67a]">Home</li>
-        <li className="cursor-pointer hover:text-[#c2a67a]">Shop</li>
-        <li className="cursor-pointer hover:text-[#c2a67a]">About</li>
-        <li className="cursor-pointer hover:text-[#c2a67a]">Contact</li>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/shop">Shop</Link></li>
+        <li><Link to="/about">About</Link></li>
+        <li><Link to="/contact">Contact</Link></li>
       </ul>
 
       <div className="flex gap-4">
@@ -22,5 +23,4 @@ function Navbar() {
     </nav>
   );
 }
-
 export default Navbar;
