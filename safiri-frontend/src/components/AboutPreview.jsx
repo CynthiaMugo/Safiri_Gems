@@ -1,9 +1,11 @@
+import { Link } from "react-router-dom";
 import SectionHeading from "./SectionHeading";
 
 function AboutPreview() {
   return (
     <section className="bg-[#f8f5f2] px-6 py-20">
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
+        
         <div className="overflow-hidden rounded-[2rem] shadow-lg">
           <img
             src="/images/about-pearls.jpg"
@@ -35,9 +37,13 @@ function AboutPreview() {
             </p>
           </div>
 
-          <button className="mt-8 rounded-full border border-[#c2a67a] px-6 py-3 text-sm text-[#5a4a42] transition hover:bg-[#c2a67a] hover:text-white">
+          <Link
+            to="/about"
+            className="inline-block mt-8 rounded-full border border-[#c2a67a] px-6 py-3 text-sm text-[#5a4a42] transition hover:bg-[#c2a67a] hover:text-white"
+          >
             Learn More
-          </button>
+          </Link>
+
         </div>
       </div>
     </section>
