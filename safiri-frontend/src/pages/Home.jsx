@@ -9,12 +9,19 @@ import Footer from "../components/Footer";
 import { products } from "../data/products";
 
 function Home() {
+  const featuredProducts = products.slice(0, 4);
+
   return (
     <div className="min-h-screen bg-[#f8f5f2] text-[#5a4a42]">
       <Navbar />
       <Hero />
       <FeatureStrip />
-      <ProductGrid products={products} />
+      <ProductGrid
+        products={featuredProducts}
+        eyebrow="Featured Pieces"
+        title="A First Look at Safiri Gems"
+        description="A soft preview of elegant pieces selected to complement your everyday style."
+      />
       <CategoryPreview />
       <AboutPreview />
       <CTASection />

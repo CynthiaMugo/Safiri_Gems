@@ -190,7 +190,7 @@ I will make payment via Till Number.
                     onClick={sendOrderToWhatsApp}
                     className="w-full rounded-full bg-[#c2a67a] px-6 py-3 text-white hover:bg-[#5a4a42] transition"
                   >
-                    Send Order on WhatsApp
+                    Send Order to Safiri Gems
                   </button>
                 </form>
               </aside>
