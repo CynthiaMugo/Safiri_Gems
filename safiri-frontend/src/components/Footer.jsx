@@ -1,29 +1,78 @@
 import { Link } from "react-router-dom";
+import { Phone, MessageCircle, Share2 } from "lucide-react";
+import { FaInstagram } from "react-icons/fa";
 
 function Footer() {
   return (
-    <footer className="bg-[#f8f5f2] px-6 py-10 border-t border-[#e8ddd4]">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 text-center md:flex-row md:items-center md:justify-between md:text-left">
+    <footer className="border-t border-[#e8ddd4] bg-[#5a4a42] px-6 py-14 text-white">
+      <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-4">
+        <div className="md:col-span-2">
+          <h3 className="font-serif text-3xl">Safiri Gems</h3>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-white/70">
+            Pearl-inspired jewelry for women who love subtle luxury, quiet
+            confidence, and timeless elegance.
+          </p>
 
-        <div>
-          <h3 className="font-serif text-2xl text-[#5a4a42]">
-            Safiri Gems
-          </h3>
-          <p className="mt-2 text-sm text-[#7a6a61]">
-            Subtle luxury, made for everyday elegance.
+          <p className="mt-5 font-serif text-xl text-[#d6c3b3]">
+            “Let your jewelry mirror your inner elegance.”
           </p>
         </div>
 
-        <div className="flex justify-center gap-6 text-sm text-[#7a6a61]">
-          <Link to="/" className="hover:text-[#c2a67a]">Home</Link>
-          <Link to="/shop" className="hover:text-[#c2a67a]">Shop</Link>
-          <Link to="/about" className="hover:text-[#c2a67a]">About</Link>
-          <Link to="/contact" className="hover:text-[#c2a67a]">Contact</Link>
+        <div>
+          <h4 className="mb-4 text-sm uppercase tracking-[0.25em] text-[#d6c3b3]">
+            Explore
+          </h4>
+
+          <div className="flex flex-col gap-3 text-sm text-white/70">
+            <Link to="/" className="transition hover:text-[#d6c3b3]">
+              Home
+            </Link>
+            <Link to="/shop" className="transition hover:text-[#d6c3b3]">
+              Shop
+            </Link>
+            <Link to="/about" className="transition hover:text-[#d6c3b3]">
+              About
+            </Link>
+            <Link to="/contact" className="transition hover:text-[#d6c3b3]">
+              Contact
+            </Link>
+          </div>
         </div>
 
-        <p className="text-xs text-[#7a6a61]">
-          © {new Date().getFullYear()} Safiri Gems
-        </p>
+        <div>
+          <h4 className="mb-4 text-sm uppercase tracking-[0.25em] text-[#d6c3b3]">
+            Connect
+          </h4>
+
+          <div className="flex flex-col gap-3 text-sm text-white/70">
+            <a
+              href="https://wa.me/254700000000"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 transition hover:text-[#d6c3b3]"
+            >
+              <MessageCircle size={16} />
+              WhatsApp
+            </a>
+
+            <a
+              href="https://www.instagram.com/safirigems/"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 text-white/70 transition hover:text-[#d6c3b3]"
+            >
+              <FaInstagram size={16} />
+              Instagram
+            </a>
+
+            <p>Nairobi, Kenya</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-12 flex max-w-7xl flex-col gap-3 border-t border-white/10 pt-6 text-center text-xs text-white/50 md:flex-row md:justify-between md:text-left">
+        <p>© {new Date().getFullYear()} Safiri Gems. All rights reserved.</p>
+        <p>Subtle luxury, made for everyday elegance.</p>
       </div>
     </footer>
   );

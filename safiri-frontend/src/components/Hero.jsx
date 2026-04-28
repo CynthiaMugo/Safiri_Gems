@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 function Hero() {
   return (
     <section className="relative h-[80vh] flex items-center justify-center text-center">
@@ -22,9 +23,12 @@ function Hero() {
           Let your jewelry mirror your inner elegance.
         </p>
 
-        <button className="bg-[#c2a67a] text-white px-6 py-3 rounded-full hover:opacity-90 transition">
-          Shop Collection
-        </button>
+        <Link
+                    to="/shop"
+                    className="rounded-full bg-[#c2a67a] px-7 py-3 text-sm font-medium text-white transition hover:bg-[#d6c3b3]"
+                  >
+                    Shop Collection
+                  </Link>
       </div>
     </section>
   );
