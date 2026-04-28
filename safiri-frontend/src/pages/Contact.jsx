@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Phone, MessageCircle, MapPin } from "lucide-react";
+import { FaInstagram } from "react-icons/fa";
 
 function Contact() {
   return (
@@ -54,6 +55,21 @@ function Contact() {
                     <p>Nairobi, Kenya</p>
                   </div>
                 </div>
+                <div className="flex gap-4">
+                    <FaInstagram className="text-[#c2a67a]" />
+                    <div>
+                    <p className="font-medium text-[#5a4a42]">Instagram</p>
+                    <a
+                        href="https://www.instagram.com/safirigems/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-[#c2a67a] transition"
+                    >
+                        @safirigems
+                    </a>
+                    </div>
+                </div>
+
               </div>
 
               <a
