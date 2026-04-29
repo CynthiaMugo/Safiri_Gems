@@ -4,12 +4,20 @@ import Footer from "../components/Footer";
 import ProductGrid from "../components/ProductGrid";
 import { products } from "../data/products";
 import { useCart } from "../context/CartContext";
+import { useEffect } from "react";
 
 function Shop() {
+
   const { cartCount } = useCart();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const selectedCategory = searchParams.get("category");
+  // seo - update title based on category filter
+  useEffect(() => {
+    document.title = selectedCategory
+      ? `${selectedCategory} Collection | Safiri Gems`
+      : "Shop Earrings, Necklaces & Sets | Safiri Gems";
+  }, [selectedCategory]);
 
   const filteredProducts = selectedCategory
     ? products.filter((product) => product.category === selectedCategory)

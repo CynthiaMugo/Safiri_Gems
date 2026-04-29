@@ -3,8 +3,16 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { products } from "../data/products";
 import { useCart } from "../context/CartContext";
+import { useEffect } from "react";
 
 function ProductDetail() {
+  useEffect(() => {
+    if (product) {
+      document.title = `${product.name} | Safiri Gems`;
+    } else {
+      document.title = "Product Not Found | Safiri Gems";
+    }
+  }, [product]);
   const { id } = useParams();
   const { addToCart } = useCart();
 
@@ -34,7 +42,7 @@ function ProductDetail() {
           <div className="overflow-hidden rounded-[2rem] bg-white shadow-sm">
             <img
               src={product.image}
-              alt={product.name}
+              alt={product.alt || `${product.name} from Safiri Gems`}
               className="h-[520px] w-full object-cover"
             />
           </div>

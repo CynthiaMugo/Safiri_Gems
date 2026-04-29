@@ -7,8 +7,12 @@ import AboutPreview from "../components/AboutPreview";
 import CTASection from "../components/CTASection";
 import Footer from "../components/Footer";
 import { products } from "../data/products";
+import { useEffect } from "react";
 
 function Home() {
+  useEffect(() => {
+    document.title = "Safiri Gems | Pearl Jewelry in Kenya";
+  }, []);
   const featuredProducts = products.slice(0, 4);
 
   return (

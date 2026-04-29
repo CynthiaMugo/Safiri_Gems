@@ -10,7 +10,7 @@ function ProductCard({ product, showActions = true }) {
         <div className="relative overflow-hidden">
           <img
             src={product.image}
-            alt={product.name}
+            alt={product.alt || `${product.name} from Safiri Gems`}
             className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500"
           />
 

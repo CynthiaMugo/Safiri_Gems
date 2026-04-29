@@ -2,8 +2,13 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Phone, MessageCircle, MapPin } from "lucide-react";
 import { FaInstagram } from "react-icons/fa";
+import { useEffect } from "react";
 
 function Contact() {
+  useEffect(() => {
+    document.title = "Contact Safiri Gems | Order Jewelry in Nairobi";
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#f8f5f2] text-[#5a4a42]">
       <Navbar />
