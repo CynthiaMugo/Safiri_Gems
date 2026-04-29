@@ -4,19 +4,19 @@ import SectionHeading from "./SectionHeading";
 const categories = [
   {
     title: "Earrings",
-    image: "/images/category-earrings.jpg",
+    image: "/placeholder3.jpeg",
   },
   {
     title: "Necklaces",
-    image: "/images/category-necklaces.jpg",
+    image: "/placeholder7.jpeg",
   },
   {
     title: "Sets",
-    image: "/images/category-sets.jpg",
+    image: "/placeholder9.jpeg",
   },
   {
     title: "Bracelets",
-    image: "/images/category-bracelets.jpg",
+    image: "/placeholder1.jpeg",
     status: "Coming Soon",
   },
 ];

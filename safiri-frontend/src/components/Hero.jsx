@@ -5,7 +5,7 @@ function Hero() {
 
       {/* Background image */}
       <img
-        src="/images/hero.jpg"
+        src="/homepage2.jpeg"
         alt="Jewelry"
         className="absolute w-full h-full object-cover"
       />

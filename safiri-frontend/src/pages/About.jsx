@@ -27,7 +27,7 @@ function About() {
           <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 items-center">
             <div className="rounded-[2rem] overflow-hidden shadow-lg">
               <img
-                src="/images/about-pearls.jpg"
+                src="/placeholder1.jpeg"
                 alt="Pearl jewelry"
                 className="h-[430px] w-full object-cover"
               />
@@ -35,7 +35,7 @@ function About() {
 
             <div>
               <p className="font-serif text-3xl mb-6">
-                Jewelry is not just an accessory — it is a reflection of one’s
+                Jewelry is not just an accessory, it is a reflection of one’s
                 personality.
               </p>
 
@@ -67,7 +67,7 @@ function About() {
             </p>
 
             <p className="mt-4 text-sm text-[#7a6a61]">
-              Safiri Gems — subtle luxury, made for everyday elegance.
+              Safiri Gems - subtle luxury, made for everyday elegance.
             </p>
           </div>
         </section>

@@ -8,7 +8,7 @@ function AboutPreview() {
         
         <div className="overflow-hidden rounded-[2rem] shadow-lg">
           <img
-            src="/images/about-pearls.jpg"
+            src="/placeholder5.jpeg"
             alt="Pearl jewelry detail"
             className="h-[420px] w-full object-cover transition duration-500 hover:scale-105"
           />
