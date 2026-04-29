@@ -29,7 +29,7 @@ function Cart() {
   }
 
   function sendOrderToWhatsApp() {
-    const businessPhone = "254700000000"; // replace with real number
+    const businessPhone = "254793199194";
 
     const orderItems = cartItems
       .map(

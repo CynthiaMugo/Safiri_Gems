@@ -36,7 +36,7 @@ function Contact() {
                   <MessageCircle className="text-[#c2a67a]" />
                   <div>
                     <p className="font-medium text-[#5a4a42]">WhatsApp</p>
-                    <p>+254 700 000 000</p>
+                    <p>+254 793 199 194</p>
                   </div>
                 </div>
 
@@ -44,7 +44,7 @@ function Contact() {
                   <Phone className="text-[#c2a67a]" />
                   <div>
                     <p className="font-medium text-[#5a4a42]">Phone</p>
-                    <p>+254 700 000 000</p>
+                    <p>+254 793 199 194</p>
                   </div>
                 </div>
 
@@ -73,7 +73,7 @@ function Contact() {
               </div>
 
               <a
-                href="https://wa.me/254700000000"
+                href="https://wa.me/254793199194"
                 target="_blank"
                 rel="noreferrer"
                 className="mt-8 inline-block rounded-full bg-[#c2a67a] px-7 py-3 text-sm font-medium text-white transition hover:bg-[#5a4a42]"

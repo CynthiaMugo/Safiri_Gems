@@ -46,7 +46,7 @@ function Footer() {
 
           <div className="flex flex-col gap-3 text-sm text-white/70">
             <a
-              href="https://wa.me/254700000000"
+              href="https://wa.me/254793199194"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 transition hover:text-[#d6c3b3]"
