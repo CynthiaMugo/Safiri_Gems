@@ -4,10 +4,14 @@ import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import ProductDetail from "./pages/ProductDetail"; 
+import ProductDetail from "./pages/ProductDetail";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
+    <>
+    <ScrollToTop />
+
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/shop" element={<Shop />} />
@@ -16,6 +20,7 @@ function App() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/product/:id" element={<ProductDetail />} />
     </Routes>
+    </>
   );
 }
 
