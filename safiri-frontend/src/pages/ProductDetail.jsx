@@ -4,8 +4,15 @@ import Footer from "../components/Footer";
 import { products } from "../data/products";
 import { useCart } from "../context/CartContext";
 import { useEffect } from "react";
+import PageTransition from "../components/PageTransition";
+import ImageWithSkeleton from "../components/ImageWithSkeleton";
 
 function ProductDetail() {
+  
+  const { id } = useParams();
+  const { addToCart } = useCart();
+
+  const product = products.find((item) => item.id === Number(id));
   useEffect(() => {
     if (product) {
       document.title = `${product.name} | Safiri Gems`;
@@ -13,10 +20,6 @@ function ProductDetail() {
       document.title = "Product Not Found | Safiri Gems";
     }
   }, [product]);
-  const { id } = useParams();
-  const { addToCart } = useCart();
-
-  const product = products.find((item) => item.id === Number(id));
 
   if (!product) {
     return (
@@ -34,13 +37,14 @@ function ProductDetail() {
   }
 
   return (
+    <PageTransition>
     <div className="min-h-screen bg-[#f8f5f2] text-[#5a4a42]">
       <Navbar />
 
       <main className="px-6 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-2">
           <div className="overflow-hidden rounded-[2rem] bg-white shadow-sm">
-            <img
+            <ImageWithSkeleton
               src={product.image}
               alt={product.alt || `${product.name} from Safiri Gems`}
               className="h-[520px] w-full object-cover"
@@ -95,6 +99,7 @@ function ProductDetail() {
 
       <Footer />
     </div>
+    </PageTransition>
   );
 }
 

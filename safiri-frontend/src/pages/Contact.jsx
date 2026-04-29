@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import { Phone, MessageCircle, MapPin } from "lucide-react";
 import { FaInstagram } from "react-icons/fa";
 import { useEffect } from "react";
+import PageTransition from "../components/PageTransition";
 
 function Contact() {
   useEffect(() => {
@@ -10,6 +11,7 @@ function Contact() {
   }, []);
 
   return (
+    <PageTransition>
     <div className="min-h-screen bg-[#f8f5f2] text-[#5a4a42]">
       <Navbar />
 
@@ -119,6 +121,7 @@ function Contact() {
 
       <Footer />
     </div>
+    </PageTransition>
   );
 }
 

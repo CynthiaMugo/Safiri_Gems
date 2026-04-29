@@ -5,6 +5,7 @@ import ProductGrid from "../components/ProductGrid";
 import { products } from "../data/products";
 import { useCart } from "../context/CartContext";
 import { useEffect } from "react";
+import PageTransition from "../components/PageTransition";
 
 function Shop() {
 
@@ -28,6 +29,7 @@ function Shop() {
   }
 
   return (
+    <PageTransition>
     <div className="min-h-screen bg-[#f8f5f2] text-[#5a4a42]">
       <Navbar />
 
@@ -108,6 +110,7 @@ function Shop() {
 
       <Footer />
     </div>
+    </PageTransition>
   );
 }
 

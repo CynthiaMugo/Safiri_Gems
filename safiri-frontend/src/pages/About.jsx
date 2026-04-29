@@ -1,12 +1,14 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useEffect } from "react";
+import PageTransition from "../components/PageTransition";
 
 function About() {
   useEffect(() => {
     document.title = "About Safiri Gems | Pearl Jewelry in Kenya";
   }, []);
   return (
+    <PageTransition>
     <div className="min-h-screen bg-[#f8f5f2] text-[#5a4a42]">
       <Navbar />
 
@@ -79,6 +81,7 @@ function About() {
 
       <Footer />
     </div>
+    </PageTransition>
   );
 }
 

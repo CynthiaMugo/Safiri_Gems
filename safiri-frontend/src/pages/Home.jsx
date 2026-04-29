@@ -8,6 +8,7 @@ import CTASection from "../components/CTASection";
 import Footer from "../components/Footer";
 import { products } from "../data/products";
 import { useEffect } from "react";
+import PageTransition from "../components/PageTransition";
 
 function Home() {
   useEffect(() => {
@@ -16,6 +17,7 @@ function Home() {
   const featuredProducts = products.slice(0, 4);
 
   return (
+    <PageTransition>
     <div className="min-h-screen bg-[#f8f5f2] text-[#5a4a42]">
       <Navbar />
       <Hero />
@@ -33,6 +35,7 @@ function Home() {
       <CTASection />
       <Footer />
     </div>
+    </PageTransition>
   );
 }
 

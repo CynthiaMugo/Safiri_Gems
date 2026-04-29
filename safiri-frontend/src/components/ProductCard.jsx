@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import ImageWithSkeleton from "./ImageWithSkeleton";
 
 function ProductCard({ product, showActions = true }) {
   const { addToCart } = useCart();
 
   return (
-    <div className="group bg-white/70 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+    <div className="group bg-white/70 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
       <Link to={`/product/${product.id}`} className="block">
         <div className="relative overflow-hidden">
-          <img
+          <ImageWithSkeleton
             src={product.image}
             alt={product.alt || `${product.name} from Safiri Gems`}
             className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500"
