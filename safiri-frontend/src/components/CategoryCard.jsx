@@ -1,15 +1,19 @@
+import { Link } from "react-router-dom";
+
 function CategoryCard({ title, image, status }) {
   return (
-    <div className="group relative rounded-3xl overflow-hidden h-72 cursor-pointer">
-      
+    <Link
+      to={`/shop?category=${encodeURIComponent(title)}`}
+      className="group relative block h-72 cursor-pointer overflow-hidden rounded-3xl"
+    >
       <img
         src={image}
         alt={title}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
 
       {/* softer overlay */}
-      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition"></div>
+      <div className="absolute inset-0 bg-black/10 transition group-hover:bg-black/20"></div>
 
       {/* content */}
       <div className="absolute bottom-5 left-5 text-white text-left">
@@ -24,8 +28,12 @@ function CategoryCard({ title, image, status }) {
           {title}
         </h3>
 
+        {/* hover hint */}
+        <p className="mt-1 text-xs text-white/80 opacity-0 transition group-hover:opacity-100">
+          Shop {title} →
+        </p>
       </div>
-    </div>
+    </Link>
   );
 }
 
