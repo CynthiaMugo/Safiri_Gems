@@ -18,6 +18,7 @@ function Cart() {
     location: "",
     notes: "",
   });
+  const [errors, setErrors] = useState({});
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -28,7 +29,30 @@ function Cart() {
     }));
   }
 
+  function validateForm() {
+    const newErrors = {};
+
+    if (!customer.name.trim()) {
+        newErrors.name = "Full name is required.";
+    }
+
+    if (!customer.phone.trim()) {
+        newErrors.phone = "Phone number is required.";
+    } else if (!/^(\+254|254|0)?7\d{8}$/.test(customer.phone.trim())) {
+        newErrors.phone = "Enter a valid Kenyan phone number.";
+    }
+
+    if (!customer.location.trim()) {
+        newErrors.location = "Delivery location is required.";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+    }
+
   function sendOrderToWhatsApp() {
+    if (!validateForm()) return;
     const businessPhone = "254793199194";
 
     const orderItems = cartItems
@@ -48,7 +72,7 @@ Delivery Location: ${customer.location}%0A
 Notes: ${customer.notes || "None"}%0A%0A
 Order:%0A${orderItems}%0A%0A
 Total: KSh ${cartTotal.toLocaleString()}%0A%0A
-I will make payment via Till Number.
+I will make payment via Till Number: 123456 - Safiri Gems.
 `;
 
     window.open(`https://wa.me/${businessPhone}?text=${message}`, "_blank");
@@ -138,14 +162,25 @@ I will make payment via Till Number.
                 </div>
 
                 <div className="rounded-2xl bg-[#eee6df] p-4 mb-6 text-sm">
-                  <p className="font-medium mb-1">Payment Instructions</p>
-                  <p className="text-[#7a6a61]">
-                    Pay via Till Number:
-                    <strong className="text-[#5a4a42]"> Coming Soon</strong>
-                  </p>
-                  <p className="text-[#7a6a61] mt-2">
-                    After payment, send your order through WhatsApp for confirmation.
-                  </p>
+                    <p className="font-medium mb-1">Payment Instructions</p>
+
+                    <p className="text-[#7a6a61]">
+                        Pay via Till Number:
+                        <strong className="text-[#5a4a42]"> 123456</strong>
+                    </p>
+
+                    <p className="text-[#7a6a61]">
+                        Business Name:
+                        <strong className="text-[#5a4a42]"> Safiri Gems</strong>
+                    </p>
+
+                    <p className="text-[#7a6a61] mt-2">
+                        Please confirm the business name before completing payment.
+                    </p>
+
+                    <p className="text-[#7a6a61] mt-2">
+                        After payment, send your order through WhatsApp for confirmation.
+                    </p>
                 </div>
 
                 <form className="space-y-4">
@@ -157,6 +192,9 @@ I will make payment via Till Number.
                     onChange={handleChange}
                     className="w-full rounded-full border border-[#e8ddd4] bg-[#f8f5f2] px-4 py-3 outline-none focus:border-[#c2a67a]"
                   />
+                  {errors.name && (
+                    <p className="text-xs text-red-500">{errors.name}</p>
+                    )}
 
                   <input
                     type="tel"
@@ -166,6 +204,9 @@ I will make payment via Till Number.
                     onChange={handleChange}
                     className="w-full rounded-full border border-[#e8ddd4] bg-[#f8f5f2] px-4 py-3 outline-none focus:border-[#c2a67a]"
                   />
+                  {errors.phone && (
+                <p className="text-xs text-red-500">{errors.phone}</p>
+                )}
 
                   <input
                     type="text"
@@ -175,6 +216,9 @@ I will make payment via Till Number.
                     onChange={handleChange}
                     className="w-full rounded-full border border-[#e8ddd4] bg-[#f8f5f2] px-4 py-3 outline-none focus:border-[#c2a67a]"
                   />
+                  {errors.location && (
+                <p className="text-xs text-red-500">{errors.location}</p>
+                )}
 
                   <textarea
                     name="notes"
