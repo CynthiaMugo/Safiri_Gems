@@ -14,7 +14,7 @@ function CTASection() {
         </h2>
 
         <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-white/75">
-          Explore pearl-inspired pieces designed for everyday elegance and special moments.
+          Explore our pieces designed for everyday elegance and special moments.
         </p>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">

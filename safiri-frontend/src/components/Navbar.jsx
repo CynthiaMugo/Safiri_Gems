@@ -21,7 +21,7 @@ function Navbar() {
   Safiri Gems
 </h1> */}
           <p className="mt-1 text-[10px] uppercase tracking-[0.35em] text-[#c2a67a]">
-            Pearl Elegance
+            Elegance Incarnate
           </p>
         </Link>
 

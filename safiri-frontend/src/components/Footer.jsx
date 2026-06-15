@@ -9,7 +9,7 @@ function Footer() {
         <div className="md:col-span-2">
           <h3 className="font-serif text-3xl">Safiri Gems</h3>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-white/70">
-            Pearl-inspired jewelry for women who love subtle luxury, quiet
+            Jewelry for women who love subtle luxury, quiet
             confidence, and timeless elegance.
           </p>
 
