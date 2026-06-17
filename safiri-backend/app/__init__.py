@@ -21,13 +21,13 @@ def create_app():
     # register blueprint
     # app.register_blueprint(student_bp)
     # app.register_blueprint(student_bp,url_prefix="/student")
-    # from .routes.product_routes import product_bp
-    # from .routes.category_routes import category_bp
-    # from .routes.order_routes import order_bp
+    from .routes.product_routes import product_bp
+    from .routes.category_routes import category_bp
+    from .routes.order_routes import order_bp
 
-    # app.register_blueprint(product_bp, url_prefix="/api/products")
-    # app.register_blueprint(category_bp, url_prefix="/api/categories")
-    # app.register_blueprint(order_bp, url_prefix="/api/orders")
+    app.register_blueprint(product_bp, url_prefix="/api/products")
+    app.register_blueprint(category_bp, url_prefix="/api/categories")
+    app.register_blueprint(order_bp, url_prefix="/api/orders")
     
 
     return app
