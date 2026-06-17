@@ -2,7 +2,6 @@ from flask import Flask
 from .config import Config
 from .db import db,migrate
 from .models import *
-from .routes import student_bp, user_bp
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
@@ -19,11 +18,16 @@ def create_app():
     bcrypt.init_app(app)
     jwt.init_app(app)
 
-    # Day 2 addition
     # register blueprint
     # app.register_blueprint(student_bp)
-    
-    # Can also have the url_prefix here
     # app.register_blueprint(student_bp,url_prefix="/student")
+    from .routes.product_routes import product_bp
+    from .routes.category_routes import category_bp
+    from .routes.order_routes import order_bp
+
+    app.register_blueprint(product_bp, url_prefix="/api/products")
+    app.register_blueprint(category_bp, url_prefix="/api/categories")
+    app.register_blueprint(order_bp, url_prefix="/api/orders")
+    
 
     return app
