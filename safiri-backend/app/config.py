@@ -6,9 +6,10 @@ from dotenv import load_dotenv
 load_dotenv()
 # print("ENV Credentials")
 # print(os.getenv("DATABASE_URL"))
+# print(os.getenv("JWT_SECRET_KEY"))
 
 class Config:
     SQLALCHEMY_DATABASE_URI=os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS=False
-    SECRET_KEY="secret"
-    JWT_SECRET_KEY="RandomStringForJWTSecretKey243!"
+    SECRET_KEY=os.getenv("SECRET_KEY")
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
