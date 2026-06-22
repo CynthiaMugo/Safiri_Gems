@@ -24,10 +24,12 @@ def create_app():
     from .routes.product_routes import product_bp
     from .routes.category_routes import category_bp
     from .routes.order_routes import order_bp
+    from .routes.admin_routes import auth_bp
 
     app.register_blueprint(product_bp, url_prefix="/api/products")
     app.register_blueprint(category_bp, url_prefix="/api/categories")
     app.register_blueprint(order_bp, url_prefix="/api/orders")
+    app.register_blueprint(auth_bp, url_prefix="/api/admin")
     
 
     return app

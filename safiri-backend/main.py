@@ -9,7 +9,7 @@ CORS(app)
 
 @app.route("/")
 def Home():
-    return "My API is working"
+    return "My Safiri Gems API is working"
 
 if __name__=="__main__":
     app.run(debug=True)
