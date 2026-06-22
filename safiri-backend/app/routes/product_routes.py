@@ -33,7 +33,7 @@ def create_product():
     db.session.add(product)
     db.session.commit()
 
-    return jsonify(product.to_dict()), 201
+    return jsonify({"massage" : "Product Created"}, product.to_dict()), 201
 
 
 @product_bp.put("/<int:product_id>")

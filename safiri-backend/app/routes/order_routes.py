@@ -25,6 +25,8 @@ def create_order():
         customer_phone=data.get("customer_phone"),
         customer_email=data.get("customer_email"),
         product_id=product.id,
+        product_name=product.name,
+        product_price=product.price,
         quantity=quantity,
         total_price=total_price,
         mpesa_reference=data.get("mpesa_reference"),
