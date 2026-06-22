@@ -2,10 +2,12 @@ from flask import Blueprint, request, jsonify
 from app.db import db
 from app.models.order import Order
 from app.models.product import Product
+from flask_jwt_extended import jwt_required
 
 order_bp = Blueprint("order_bp", __name__)
 
 @order_bp.get("/")
+@jwt_required()
 def get_orders():
     orders = Order.query.order_by(Order.created_at.desc()).all()
     return jsonify([order.to_dict() for order in orders]), 200
@@ -25,8 +27,8 @@ def create_order():
         customer_phone=data.get("customer_phone"),
         customer_email=data.get("customer_email"),
         product_id=product.id,
-        product_name=product.name,
-        product_price=product.price,
+        # product_name=product.name,
+        # product_price=product.price,
         quantity=quantity,
         total_price=total_price,
         mpesa_reference=data.get("mpesa_reference"),
@@ -40,6 +42,7 @@ def create_order():
 
 
 @order_bp.put("/<int:order_id>/status")
+@jwt_required()
 def update_order_status(order_id):
     order = Order.query.get_or_404(order_id)
     data = request.get_json()

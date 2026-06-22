@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.db import db
 from app.models.category import Category
+from flask_jwt_extended import jwt_required
 
 category_bp = Blueprint("category_bp", __name__)
 
@@ -11,6 +12,7 @@ def get_categories():
 
 
 @category_bp.post("/")
+@jwt_required()
 def create_category():
     data = request.get_json()
 

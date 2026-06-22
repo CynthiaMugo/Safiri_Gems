@@ -1,12 +1,13 @@
 from flask import Flask
 from .config import Config
-from .db import db,migrate
+from .db import db, migrate, jwt
 from .models import *
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
+
 
 bcrypt = Bcrypt()
-jwt = JWTManager()
 
 def create_app():
     app=Flask(__name__)
@@ -18,6 +19,16 @@ def create_app():
     bcrypt.init_app(app)
     jwt.init_app(app)
 
+    # enable CORS for all routes
+    CORS(
+        app,
+        resources={
+            r"/api/*": {
+                "origins": "*"
+            }
+        }
+    )
+
     # register blueprint
     # app.register_blueprint(student_bp)
     # app.register_blueprint(student_bp,url_prefix="/student")
@@ -26,10 +37,10 @@ def create_app():
     from .routes.order_routes import order_bp
     from .routes.admin_routes import auth_bp
 
-    app.register_blueprint(product_bp, url_prefix="/api/products")
-    app.register_blueprint(category_bp, url_prefix="/api/categories")
-    app.register_blueprint(order_bp, url_prefix="/api/orders")
-    app.register_blueprint(auth_bp, url_prefix="/api/admin")
+    app.register_blueprint(product_bp, url_prefix="/products")
+    app.register_blueprint(category_bp, url_prefix="/categories")
+    app.register_blueprint(order_bp, url_prefix="/orders")
+    app.register_blueprint(auth_bp, url_prefix="/admin")
     
 
     return app

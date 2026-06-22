@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.db import db
 from app.models.product import Product
+from flask_jwt_extended import jwt_required
 
 product_bp = Blueprint("product_bp", __name__)
 
@@ -17,6 +18,7 @@ def get_product(product_id):
 
 
 @product_bp.post("/")
+@jwt_required()
 def create_product():
     data = request.get_json()
 
@@ -33,10 +35,14 @@ def create_product():
     db.session.add(product)
     db.session.commit()
 
-    return jsonify({"massage" : "Product Created"}, product.to_dict()), 201
+    return jsonify({
+        "message": "Product Created",
+        "product": product.to_dict()
+    }), 201
 
 
 @product_bp.put("/<int:product_id>")
+@jwt_required()
 def update_product(product_id):
     product = Product.query.get_or_404(product_id)
     data = request.get_json()
@@ -55,6 +61,7 @@ def update_product(product_id):
 
 
 @product_bp.delete("/<int:product_id>")
+@jwt_required()
 def delete_product(product_id):
     product = Product.query.get_or_404(product_id)
 

@@ -1,4 +1,5 @@
 from app.db import db
+from datetime import datetime
 
 class Product(db.Model):
     __tablename__ = "products"
@@ -10,6 +11,16 @@ class Product(db.Model):
     image_url = db.Column(db.String(255), nullable=True)
     stock = db.Column(db.Integer, default=0)
     is_featured = db.Column(db.Boolean, default=False)
+    created_at = db.Column(
+    db.DateTime,
+    server_default=db.func.now()
+    )
+
+    updated_at = db.Column(
+        db.DateTime,
+        server_default=db.func.now(),
+        onupdate=db.func.now()
+    )
 
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=True)
 
