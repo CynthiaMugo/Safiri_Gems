@@ -7,6 +7,7 @@ import { getProduct } from "../services/productService";
 import { useCart } from "../context/CartContext";
 import PageTransition from "../components/PageTransition";
 import ImageWithSkeleton from "../components/ImageWithSkeleton";
+import Loader from "../components/Loader";
 
 function ProductDetail() {
   
@@ -40,9 +41,7 @@ function ProductDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
+      <Loader text="Preparing Product Details..." />
     );
   }
 

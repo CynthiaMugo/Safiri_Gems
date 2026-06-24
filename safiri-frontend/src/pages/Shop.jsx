@@ -9,6 +9,7 @@ import { getProducts } from "../services/productService";
 import { useCart } from "../context/CartContext";
 // import { useEffect } from "react";
 import PageTransition from "../components/PageTransition";
+import Loader from "../components/Loader";
 
 function Shop() {
 
@@ -42,9 +43,7 @@ function Shop() {
   }, [selectedCategory]);
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f8f5f2]">
-        Loading products...
-      </div>
+      <Loader />
     );
   }
 

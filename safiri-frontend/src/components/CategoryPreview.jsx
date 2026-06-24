@@ -1,27 +1,41 @@
+import { useState, useEffect } from "react";
 import CategoryCard from "./CategoryCard";
 import SectionHeading from "./SectionHeading";
+import { getCategories } from "../services/categoryService";
 
-const categories = [
-  {
-    title: "Earrings",
-    image: "/placeholder3.jpeg",
-  },
-  {
-    title: "Necklaces",
-    image: "/placeholder7.jpeg",
-  },
-  {
-    title: "Sets",
-    image: "/placeholder9.jpeg",
-  },
-  {
-    title: "Bracelets",
-    image: "/placeholder1.jpeg",
-    status: "Coming Soon",
-  },
-];
+
 
 function CategoryPreview() {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const data = await getCategories();
+
+        const categoriesWithImages = data.map((category) => ({
+          ...category,
+          image:
+            category.name === "Earrings"
+              ? "/placeholder3.jpeg"
+              : category.name === "Necklaces"
+              ? "/placeholder7.jpeg"
+              : category.name === "Sets"
+              ? "/placeholder9.jpeg"
+              : category.name === "Bracelets"
+              ? "/placeholder1.jpeg"
+              : "/placeholder.jpeg",
+        }));
+
+        setCategories(categoriesWithImages);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchCategories();
+  }, []);
+
   return (
     <section className="py-20 px-6 bg-[#eee6df]">
       <SectionHeading
@@ -31,12 +45,11 @@ function CategoryPreview() {
       />
 
       <div className="max-w-6xl mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {categories.map((category) => (
+        {categories.slice(0, 4).map((category) => (
           <CategoryCard
-            key={category.title}
-            title={category.title}
+            key={category.id}
+            title={category.name}
             image={category.image}
-            status={category.status}
           />
         ))}
       </div>
