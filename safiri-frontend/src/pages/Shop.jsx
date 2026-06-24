@@ -2,15 +2,36 @@ import { Link, useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductGrid from "../components/ProductGrid";
-import { products } from "../data/products";
+// import { products } from "../data/products";
+import { useState, useEffect } from "react";
+import { getProducts } from "../services/productService";
+
 import { useCart } from "../context/CartContext";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import PageTransition from "../components/PageTransition";
 
 function Shop() {
 
   const { cartCount } = useCart();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, []);
+  
 
   const selectedCategory = searchParams.get("category");
   // seo - update title based on category filter
@@ -19,6 +40,13 @@ function Shop() {
       ? `${selectedCategory} Collection | Safiri Gems`
       : "Shop Earrings, Necklaces & Sets | Safiri Gems";
   }, [selectedCategory]);
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f8f5f2]">
+        Loading products...
+      </div>
+    );
+  }
 
   const filteredProducts = selectedCategory
     ? products.filter((product) => product.category === selectedCategory)
