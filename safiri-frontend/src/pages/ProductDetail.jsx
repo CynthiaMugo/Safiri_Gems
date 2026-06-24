@@ -1,25 +1,49 @@
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { products } from "../data/products";
+// import { products } from "../data/products";
+import { useState, useEffect } from "react";
+import { getProduct } from "../services/productService";
 import { useCart } from "../context/CartContext";
-import { useEffect } from "react";
 import PageTransition from "../components/PageTransition";
 import ImageWithSkeleton from "../components/ImageWithSkeleton";
+import Loader from "../components/Loader";
 
 function ProductDetail() {
   
   const { id } = useParams();
   const { addToCart } = useCart();
 
-  const product = products.find((item) => item.id === Number(id));
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    if (product) {
-      document.title = `${product.name} | Safiri Gems`;
-    } else {
-      document.title = "Product Not Found | Safiri Gems";
+    async function fetchProduct() {
+      try {
+        const data = await getProduct(id);
+
+        setProduct(data);
+
+        document.title = `${data.name} | Safiri Gems`;
+      } catch (error) {
+        console.error(error);
+
+        setProduct(null);
+
+        document.title = "Product Not Found | Safiri Gems";
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [product]);
+
+    fetchProduct();
+  }, [id]);
+  
+
+  if (loading) {
+    return (
+      <Loader text="Preparing Product Details..." />
+    );
+  }
 
   if (!product) {
     return (

@@ -10,7 +10,7 @@ function ProductCard({ product, showActions = true }) {
       <Link to={`/product/${product.id}`} className="block">
         <div className="relative overflow-hidden">
           <ImageWithSkeleton
-            src={product.image}
+            src={product.image || "/placeholder.jpeg"}
             alt={product.alt || `${product.name} from Safiri Gems`}
             className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500"
           />

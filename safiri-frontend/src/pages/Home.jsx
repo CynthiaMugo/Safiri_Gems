@@ -6,11 +6,26 @@ import CategoryPreview from "../components/CategoryPreview";
 import AboutPreview from "../components/AboutPreview";
 import CTASection from "../components/CTASection";
 import Footer from "../components/Footer";
-import { products } from "../data/products";
-import { useEffect } from "react";
+// import { products } from "../data/products";
+import { useEffect, useState } from "react";
+import { getProducts } from "../services/productService";
 import PageTransition from "../components/PageTransition";
 
+
+
 function Home() {
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const data = await getProducts();
+
+      setProducts(data);
+    }
+
+    fetchProducts();
+  }, []);
   useEffect(() => {
     document.title = "Safiri Gems | Pearl Jewelry in Kenya";
   }, []);
