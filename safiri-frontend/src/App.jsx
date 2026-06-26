@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import AdminLogin from "./admin/pages/AdminLogin";
 import Dashboard from "./admin/pages/Dashboard";
 import ProtectedRoute from "./admin/components/ProtectedRoute";
+import Products from "./admin/pages/Products";
 
 function App() {
   return (
@@ -34,6 +35,10 @@ function App() {
             <Dashboard />
           </ProtectedRoute>
         }
+      />
+      <Route
+        path="/admin/products"
+        element={<Products />}
       />
     </Routes>
     
