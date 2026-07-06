@@ -1,6 +1,11 @@
 import ProductRow from "./ProductRow";
 
-function ProductTable({ products, loading }) {
+function ProductTable({
+  products,
+  loading,
+  onEdit,
+  onDelete,
+}) {
   if (loading) {
     return (
       <div className="rounded-3xl bg-white p-10 shadow-sm">
@@ -36,10 +41,12 @@ function ProductTable({ products, loading }) {
         <div className="text-right">Actions</div>
       </div>
 
-      {products.map(product => (
+      {products.map((product) => (
         <ProductRow
           key={product.id}
           product={product}
+          onEdit={onEdit}
+          onDelete={onDelete}
         />
       ))}
     </div>

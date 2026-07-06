@@ -1,6 +1,10 @@
 import { Pencil, Trash2 } from "lucide-react";
 
-function ProductRow({ product }) {
+function ProductRow({
+  product,
+  onEdit,
+  onDelete,
+}) {
   return (
     <div className="grid grid-cols-6 items-center border-t px-6 py-5">
       <div className="flex items-center gap-4">
@@ -32,11 +36,17 @@ function ProductRow({ product }) {
       </span>
 
       <div className="flex justify-end gap-3">
-        <button className="rounded-lg bg-[#c2a67a] p-2 text-white hover:bg-[#5a4a42]">
+        <button
+          onClick={() => onEdit(product)}
+          className="rounded-lg bg-[#c2a67a] p-2 text-white transition hover:bg-[#5a4a42]"
+        >
           <Pencil size={18} />
         </button>
 
-        <button className="rounded-lg border border-red-300 p-2 text-red-500 hover:bg-red-500 hover:text-white">
+        <button
+          onClick={() => onDelete(product.id)}
+          className="rounded-lg border border-red-300 p-2 text-red-500 transition hover:bg-red-500 hover:text-white"
+        >
           <Trash2 size={18} />
         </button>
       </div>

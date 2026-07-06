@@ -10,7 +10,11 @@ function authHeader() {
 
 export const getAdminProducts = async () => {
   const response = await api.get("/products");
-  return response.data;
+
+  return response.data.map((product) => ({
+    ...product,
+    image: product.image_url,
+  }));
 };
 
 export const createProduct = async (product) => {

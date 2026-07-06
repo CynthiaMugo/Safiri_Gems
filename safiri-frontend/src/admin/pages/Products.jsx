@@ -6,10 +6,7 @@ import ProductTable from "../components/ProductTable";
 import ProductModal from "../components/ProductModal";
 
 import {
-  getProducts,
-} from "../../services/productService";
-
-import {
+  getAdminProducts,
   deleteProduct,
 } from "../services/adminProductService";
 
@@ -21,15 +18,17 @@ function Products() {
   const [editingProduct, setEditingProduct] = useState(null);
 
   async function loadProducts() {
+    setLoading(true);
+
     try {
-      const data = await getProducts();
+      const data = await getAdminProducts();
       setProducts(data);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }
+}
 
   useEffect(() => {
     loadProducts();
