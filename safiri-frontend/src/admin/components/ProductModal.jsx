@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
-
+import toast from "react-hot-toast";
 
 import {
   createProduct,
@@ -90,10 +90,22 @@ function ProductModal({
         await createProduct(payload);
       }
 
+      toast.success(
+        editingProduct
+          ? "Product updated successfully"
+          : "Product created successfully"
+      );
+
       onSuccess();
       onClose();
     } catch (error) {
       console.error(error);
+
+      toast.error(
+        editingProduct
+          ? "Unable to update product"
+          : "Unable to create product"
+      );
     }
   }
 
