@@ -5,12 +5,13 @@ import DashboardCard from "../components/DashboardCard";
 import Header from "../components/Header";
 import { Package, ShoppingBag, CircleAlert, Mail, Plus, FolderOpen, Tags, MessageSquare,} from "lucide-react";
 import ActionCard from "../components/ActionCard";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-// const navigate = useNavigate();
+
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchDashboard() {
@@ -95,10 +96,10 @@ function Dashboard() {
 
           <div className="space-y-4">
               <ActionCard
-                  title="Add Product"
-                  description="Create a new jewelry listing."
-                  icon={Plus}
-                  onClick={() => console.log("Add Product")}
+                title="Add Product"
+                description="Create a new jewelry listing."
+                icon={Plus}
+                onClick={() => navigate("/admin/products?new=true")}
               />
 
               <ActionCard

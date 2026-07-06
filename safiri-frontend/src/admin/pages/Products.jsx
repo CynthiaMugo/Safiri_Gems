@@ -7,6 +7,7 @@ import ProductModal from "../components/ProductModal";
 import DeleteModal from "../components/DeleteModal";
 import toast from "react-hot-toast";
 import { Search } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 
 import {
   getAdminProducts,
@@ -25,6 +26,17 @@ function Products() {
   const [productToDelete, setProductToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isNewProduct = searchParams.get("new") === "true";
+  useEffect(() => {
+    if (isNewProduct) {
+      setEditingProduct(null);
+      setModalOpen(true);
+
+      setSearchParams({}); // clean URL after trigger
+    }
+  }, [isNewProduct]);
   // pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
