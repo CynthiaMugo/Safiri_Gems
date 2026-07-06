@@ -34,5 +34,8 @@ class Product(db.Model):
             "stock": self.stock,
             "is_featured": self.is_featured,
             "category": self.category.name if self.category else None,
-            "category_id": self.category_id
+            "category_id": self.category_id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+
         }

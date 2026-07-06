@@ -6,6 +6,10 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ProductDetail from "./pages/ProductDetail";
 import ScrollToTop from "./components/ScrollToTop";
+import AdminLogin from "./admin/pages/AdminLogin";
+import Dashboard from "./admin/pages/Dashboard";
+import ProtectedRoute from "./admin/components/ProtectedRoute";
+import Products from "./admin/pages/Products";
 
 function App() {
   return (
@@ -19,7 +23,25 @@ function App() {
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/product/:id" element={<ProductDetail />} />
+      <Route
+        path="/admin/login"
+        element={<AdminLogin />}
+      />
+
+      <Route
+        path="/admin/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/products"
+        element={<Products />}
+      />
     </Routes>
+    
     </>
   );
 }

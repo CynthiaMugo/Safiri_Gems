@@ -20,14 +20,7 @@ def create_app():
     jwt.init_app(app)
 
     # enable CORS for all routes
-    CORS(
-        app,
-        resources={
-            r"/api/*": {
-                "origins": "*"
-            }
-        }
-    )
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
     # register blueprint
     # app.register_blueprint(student_bp)
