@@ -44,7 +44,7 @@ function ProductRow({
         </button>
 
         <button
-          onClick={() => onDelete(product.id)}
+          onClick={() => onDelete(product)}
           className="rounded-lg border border-red-300 p-2 text-red-500 transition hover:bg-red-500 hover:text-white"
         >
           <Trash2 size={18} />

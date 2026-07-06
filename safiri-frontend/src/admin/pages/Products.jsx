@@ -4,6 +4,8 @@ import AdminLayout from "../components/AdminLayout";
 import Header from "../components/Header";
 import ProductTable from "../components/ProductTable";
 import ProductModal from "../components/ProductModal";
+import DeleteModal from "../components/DeleteModal";
+import toast from "react-hot-toast";
 
 import {
   getAdminProducts,
@@ -16,6 +18,10 @@ function Products() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const [productToDelete, setProductToDelete] = useState(null);
 
   async function loadProducts() {
     setLoading(true);
@@ -44,19 +50,27 @@ function Products() {
     setModalOpen(true);
   }
 
-  async function handleDelete(id) {
-    const confirmed = window.confirm(
-      "Delete this product?"
-    );
+  function handleDelete(product) {
+    setProductToDelete(product);
+    setDeleteModalOpen(true);
+  }
 
-    if (!confirmed) return;
-
+  async function confirmDelete() {
     try {
-      await deleteProduct(id);
+      await deleteProduct(productToDelete.id);
+
+      toast.success("Product deleted successfully");
+
       loadProducts();
+
+      setDeleteModalOpen(false);
+
+      setProductToDelete(null);
+
     } catch (error) {
       console.error(error);
-      alert("Failed to delete product.");
+
+      toast.error("Failed to delete product");
     }
   }
 
@@ -99,6 +113,12 @@ function Products() {
         onClose={() => setModalOpen(false)}
         onSuccess={loadProducts}
         editingProduct={editingProduct}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        productName={productToDelete?.name}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
       />
     </AdminLayout>
   );
