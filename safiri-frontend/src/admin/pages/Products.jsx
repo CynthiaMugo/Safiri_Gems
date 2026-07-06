@@ -25,6 +25,12 @@ function Products() {
   const [productToDelete, setProductToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  // pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory]);
 
   async function loadProducts() {
     setLoading(true);
@@ -63,12 +69,16 @@ function Products() {
       await deleteProduct(productToDelete.id);
 
       toast.success("Product deleted successfully");
-      loadProducts();
+
+      await loadProducts();
+
       setDeleteModalOpen(false);
       setProductToDelete(null);
+
+      // keep user on valid page
+      setCurrentPage((p) => p);
     } catch (error) {
       console.error(error);
-
       toast.error("Failed to delete product");
     }
   }
@@ -93,6 +103,12 @@ function Products() {
 
     return matchesSearch && matchesCategory;
   });
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <AdminLayout>
@@ -151,11 +167,46 @@ function Products() {
 
       </div>
       <ProductTable
-        products={filteredProducts}
+        products={paginatedProducts}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+      {totalPages > 1 && (
+        <div className="mt-6 flex items-center justify-center gap-2">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+            className="rounded-lg border px-3 py-1 disabled:opacity-40"
+          >
+            Prev
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`rounded-lg px-3 py-1 ${
+                currentPage === page
+                  ? "bg-[#c2a67a] text-white"
+                  : "border"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+
+          <button
+            onClick={() =>
+              setCurrentPage((p) => Math.min(p + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className="rounded-lg border px-3 py-1 disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       <ProductModal
         isOpen={modalOpen}
