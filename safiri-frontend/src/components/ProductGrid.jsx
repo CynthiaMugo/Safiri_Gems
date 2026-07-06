@@ -11,12 +11,13 @@ function ProductGrid({
   showViewAllButton = false,
 }) {
   return (
-    <section className="py-20 px-6 bg-[#f8f5f2]">
+    <section className="px-6 pt-0 pb-20 bg-[#f8f5f2]">
       <SectionHeading
         eyebrow={eyebrow}
         title={title}
         description={description}
       />
+      
 
       <div className="max-w-6xl mx-auto grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {products.map((product) => (
