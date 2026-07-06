@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 
 product_bp = Blueprint("product_bp", __name__)
 
-@product_bp.get("/")
+@product_bp.get("")
 def get_products():
     products = Product.query.all()
     return jsonify([product.to_dict() for product in products]), 200
@@ -17,7 +17,7 @@ def get_product(product_id):
     return jsonify(product.to_dict()), 200
 
 
-@product_bp.post("/")
+@product_bp.post("")
 @jwt_required()
 def create_product():
     data = request.get_json()

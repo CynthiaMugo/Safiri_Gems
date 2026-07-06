@@ -1,27 +1,65 @@
 import { useEffect, useState } from "react";
+
 import AdminLayout from "../components/AdminLayout";
 import Header from "../components/Header";
 import ProductTable from "../components/ProductTable";
-import { getProducts } from "../../services/productService";
+import ProductModal from "../components/ProductModal";
+
+import {
+  getProducts,
+} from "../../services/productService";
+
+import {
+  deleteProduct,
+} from "../services/adminProductService";
 
 function Products() {
-  const [products, setProducts] =useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const data = await getProducts();
-        setProducts(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
 
-    fetchProducts();
+  async function loadProducts() {
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadProducts();
   }, []);
+
+  function handleAddProduct() {
+    setEditingProduct(null);
+    setModalOpen(true);
+  }
+
+  function handleEdit(product) {
+    setEditingProduct(product);
+    setModalOpen(true);
+  }
+
+  async function handleDelete(id) {
+    const confirmed = window.confirm(
+      "Delete this product?"
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await deleteProduct(id);
+      loadProducts();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete product.");
+    }
+  }
 
   return (
     <AdminLayout>
@@ -42,7 +80,10 @@ function Products() {
           </p>
         </div>
 
-        <button className="rounded-xl bg-[#c2a67a] px-6 py-3 text-white transition hover:bg-[#5a4a42]">
+        <button
+          onClick={handleAddProduct}
+          className="rounded-xl bg-[#c2a67a] px-6 py-3 text-white transition hover:bg-[#5a4a42]"
+        >
           + Add Product
         </button>
       </div>
@@ -50,6 +91,15 @@ function Products() {
       <ProductTable
         products={products}
         loading={loading}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+
+      <ProductModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSuccess={loadProducts}
+        editingProduct={editingProduct}
       />
     </AdminLayout>
   );

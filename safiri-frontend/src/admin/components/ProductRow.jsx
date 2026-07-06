@@ -5,7 +5,7 @@ function ProductRow({ product }) {
     <div className="grid grid-cols-6 items-center border-t px-6 py-5">
       <div className="flex items-center gap-4">
         <img
-          src={product.image}
+          src={product.image || "/placeholder.png"}
           alt={product.name}
           className="h-16 w-16 rounded-xl object-cover"
         />
