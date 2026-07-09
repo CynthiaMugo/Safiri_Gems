@@ -7,6 +7,7 @@ from flask_jwt_extended import jwt_required
 
 order_bp = Blueprint("order_bp", __name__)
 
+
 @order_bp.get("/")
 @jwt_required()
 def get_orders():
@@ -18,25 +19,55 @@ def get_orders():
 def create_order():
     data = request.get_json()
 
-    product = Product.query.get_or_404(data.get("product_id"))
+    items = data.get("items", [])
 
-    quantity = int(data.get("quantity", 1))
-    total_price = product.price * quantity
+    if not items:
+        return jsonify({
+            "message": "Order must contain at least one item."
+        }), 400
 
+    # Validate all products first
+    validated_items = []
+
+    for item in items:
+        product = Product.query.get(item["product_id"])
+
+        if not product:
+            return jsonify({
+                "message": f"Product with ID {item['product_id']} does not exist."
+            }), 404
+
+        quantity = int(item.get("quantity", 1))
+
+        if quantity < 1:
+            return jsonify({
+                "message": f"Invalid quantity for {product.name}."
+            }), 400
+
+        validated_items.append((product, quantity))
+
+    # Create the order
     order = Order(
         customer_name=data.get("customer_name"),
         customer_phone=data.get("customer_phone"),
         customer_email=data.get("customer_email"),
-        product_id=product.id,
-        # product_name=product.name,
-        # product_price=product.price,
-        quantity=quantity,
-        total_price=total_price,
+        delivery_location=data.get("delivery_location"),
         mpesa_reference=data.get("mpesa_reference"),
-        delivery_location=data.get("delivery_location")
     )
 
     db.session.add(order)
+
+    # Create the order items
+    for product, quantity in validated_items:
+        order_item = OrderItem(
+            order=order,
+            product=product,
+            quantity=quantity,
+            unit_price=product.price,
+        )
+
+        db.session.add(order_item)
+    # Save everything
     db.session.commit()
 
     return jsonify(order.to_dict()), 201
@@ -48,8 +79,15 @@ def update_order_status(order_id):
     order = Order.query.get_or_404(order_id)
     data = request.get_json()
 
-    order.payment_status = data.get("payment_status", order.payment_status)
-    order.order_status = data.get("order_status", order.order_status)
+    order.payment_status = data.get(
+        "payment_status",
+        order.payment_status
+    )
+
+    order.order_status = data.get(
+        "order_status",
+        order.order_status
+    )
 
     db.session.commit()
 
