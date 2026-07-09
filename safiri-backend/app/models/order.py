@@ -8,23 +8,37 @@ class Order(db.Model):
 
     customer_name = db.Column(db.String(150), nullable=False)
     customer_phone = db.Column(db.String(50), nullable=False)
-    customer_email = db.Column(db.String(150), nullable=True)
+    customer_email = db.Column(db.String(150))
 
-    product_id = db.Column(db.Integer, db.ForeignKey("products.id"), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False, default=1)
+    payment_method = db.Column(
+        db.String(50),
+        default="mpesa_till"
+    )
 
-    total_price = db.Column(db.Float, nullable=False)
+    payment_status = db.Column(
+        db.String(50),
+        default="pending"
+    )
 
-    payment_method = db.Column(db.String(50), default="mpesa_till")
-    payment_status = db.Column(db.String(50), default="pending")
-    mpesa_reference = db.Column(db.String(100), nullable=True)
+    mpesa_reference = db.Column(db.String(100))
 
-    delivery_location = db.Column(db.String(255), nullable=True)
-    order_status = db.Column(db.String(50), default="new")
+    delivery_location = db.Column(db.String(255))
 
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    order_status = db.Column(
+        db.String(50),
+        default="new"
+    )
 
-    product = db.relationship("Product")
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
+
+    items = db.relationship(
+        "OrderItem",
+        back_populates="order",
+        cascade="all, delete-orphan"
+    )
 
     def to_dict(self):
         return {
@@ -32,13 +46,14 @@ class Order(db.Model):
             "customer_name": self.customer_name,
             "customer_phone": self.customer_phone,
             "customer_email": self.customer_email,
-            "product": self.product.to_dict() if self.product else None,
-            "quantity": self.quantity,
-            "total_price": self.total_price,
             "payment_method": self.payment_method,
             "payment_status": self.payment_status,
             "mpesa_reference": self.mpesa_reference,
             "delivery_location": self.delivery_location,
             "order_status": self.order_status,
-            "created_at": self.created_at.isoformat()
+            "created_at": self.created_at.isoformat(),
+            "items": [
+                item.to_dict()
+                for item in self.items
+            ]
         }

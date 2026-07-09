@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.db import db
 from app.models.order import Order
+from app.models.order_item import OrderItem
 from app.models.product import Product
 from flask_jwt_extended import jwt_required
 
