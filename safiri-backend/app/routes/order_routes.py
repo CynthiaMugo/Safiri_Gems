@@ -26,15 +26,15 @@ def create_order():
             "message": "Order must contain at least one item."
         }), 400
 
-    # Validate all products first
+    # Validate products first
     validated_items = []
 
     for item in items:
-        product = Product.query.get(item["product_id"])
+        product = Product.query.get(item.get("product_id"))
 
         if not product:
             return jsonify({
-                "message": f"Product with ID {item['product_id']} does not exist."
+                "message": f"Product {item.get('product_id')} not found."
             }), 404
 
         quantity = int(item.get("quantity", 1))
@@ -46,7 +46,7 @@ def create_order():
 
         validated_items.append((product, quantity))
 
-    # Create the order
+    # Create order
     order = Order(
         customer_name=data.get("customer_name"),
         customer_phone=data.get("customer_phone"),
@@ -57,8 +57,15 @@ def create_order():
 
     db.session.add(order)
 
-    # Create the order items
+    # Flush to generate database ID
+    db.session.flush()
+
+    # Generate order number
+    order.order_number = f"SG-{order.id:05d}"
+
+    # Create order items
     for product, quantity in validated_items:
+
         order_item = OrderItem(
             order=order,
             product=product,
@@ -67,7 +74,8 @@ def create_order():
         )
 
         db.session.add(order_item)
-    # Save everything
+
+    # Commit once
     db.session.commit()
 
     return jsonify(order.to_dict()), 201
