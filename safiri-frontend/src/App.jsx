@@ -10,6 +10,7 @@ import AdminLogin from "./admin/pages/AdminLogin";
 import Dashboard from "./admin/pages/Dashboard";
 import ProtectedRoute from "./admin/components/ProtectedRoute";
 import Products from "./admin/pages/Products";
+import Orders from "./admin/pages/Orders";
 
 function App() {
   return (
@@ -39,6 +40,10 @@ function App() {
       <Route
         path="/admin/products"
         element={<Products />}
+      />
+      <Route
+      path="/admin/orders"
+      element={<Orders />}
       />
     </Routes>
     

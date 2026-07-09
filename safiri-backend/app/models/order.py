@@ -4,6 +4,15 @@ from datetime import datetime
 class Order(db.Model):
     __tablename__ = "orders"
 
+    PAYMENT_PENDING = "pending"
+    PAYMENT_PAID = "paid"
+
+    STATUS_NEW = "new"
+    STATUS_PROCESSING = "processing"
+    STATUS_READY = "ready"
+    STATUS_DELIVERED = "delivered"
+    STATUS_CANCELLED = "cancelled"
+
     id = db.Column(db.Integer, primary_key=True)
     order_number = db.Column(
         db.String(20),
@@ -22,7 +31,7 @@ class Order(db.Model):
 
     payment_status = db.Column(
         db.String(50),
-        default="pending"
+        default=PAYMENT_PENDING
     )
 
     mpesa_reference = db.Column(db.String(100))
@@ -31,7 +40,7 @@ class Order(db.Model):
 
     order_status = db.Column(
         db.String(50),
-        default="new"
+        default=STATUS_NEW
     )
 
     created_at = db.Column(
@@ -57,9 +66,14 @@ class Order(db.Model):
             "mpesa_reference": self.mpesa_reference,
             "delivery_location": self.delivery_location,
             "order_status": self.order_status,
+            "total_price": sum(
+                item.unit_price * item.quantity
+                for item in self.items
+            ),
             "created_at": self.created_at.isoformat(),
             "items": [
                 item.to_dict()
                 for item in self.items
             ]
+            
         }

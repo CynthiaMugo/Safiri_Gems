@@ -106,7 +106,7 @@ function Dashboard() {
                   title="Manage Orders"
                   description="View and update customer orders."
                   icon={FolderOpen}
-                  onClick={() => console.log("Orders")}
+                  onClick={() => navigate("/admin/orders")}
               />
 
               <ActionCard
