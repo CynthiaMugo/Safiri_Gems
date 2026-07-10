@@ -12,53 +12,66 @@ import toast from "react-hot-toast";
 
 
 
+
 function Orders() {
-
-
     const [orders,setOrders] = useState([]);
-
     const [loading,setLoading] = useState(true);
+    const [pagination, setPagination] = useState({});
+    const [page, setPage] = useState(1);
+    const [searchInput, setSearchInput] = useState("");
+    const [search, setSearch] = useState("");
 
+    const [orderStatus, setOrderStatus] = useState("");
+    const [paymentStatus, setPaymentStatus] = useState("");
 
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
-    async function loadOrders(){
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+          setPage(1);
+          setSearch(searchInput);
 
+      }, 500);
+
+      return () => clearTimeout(timeout);
+
+  }, [searchInput]);
+
+    async function loadOrders() {
         try {
-
             setLoading(true);
 
-            const data =
-            await getOrders();
+            const data = await getOrders({
+                page,
+                search,
+                orderStatus,
+                paymentStatus,
+                startDate,
+                endDate,
+            });
 
-            setOrders(data);
+            setOrders(data.orders);
+            setPagination(data.pagination);
 
-
-        } catch(error){
-
+        } catch (error) {
             console.error(error);
 
-            toast.error(
-            "Failed to load orders"
-            );
+            toast.error("Failed to load orders");
 
         } finally {
-
             setLoading(false);
-
         }
-
     }
 
-
-
-    useEffect(()=>{
-
+    useEffect(() => {
         loadOrders();
-
-    },[]);
-
-
-
+        }, [page,
+              search,
+              orderStatus,
+              paymentStatus,
+              startDate,
+              endDate,]);
 
 
     async function handleStatusChange(
@@ -85,8 +98,6 @@ function Orders() {
 
             loadOrders();
 
-
-
         } catch(error){
 
             console.error(error);
@@ -99,121 +110,186 @@ function Orders() {
 
     }
 
+    if (loading) {
 
+    return (
 
+        <AdminLayout>
 
+            <Header />
 
-    if(loading){
+            <div className="space-y-8">
+
+                <div>
+
+                    <p className="text-xs uppercase tracking-[0.3em] text-[#c2a67a]">
+                        Orders
+                    </p>
+
+                    <div className="mt-3 h-12 w-72 animate-pulse rounded-xl bg-[#eee6df]" />
+
+                    <div className="mt-3 h-5 w-96 animate-pulse rounded bg-[#f3ede8]" />
+
+                </div>
+
+                <div className="rounded-3xl bg-white p-8 shadow-sm">
+
+                    {[...Array(6)].map((_, index) => (
+
+                        <div
+                            key={index}
+                            className="grid grid-cols-5 gap-6 border-b border-[#f1ece7] py-5 last:border-none"
+                        >
+
+                            {[...Array(5)].map((_, cell) => (
+
+                                <div
+                                    key={cell}
+                                    className="h-5 animate-pulse rounded bg-[#eee6df]"
+                                />
+
+                            ))}
+
+                        </div>
+
+                    ))}
+
+                </div>
+
+            </div>
+
+        </AdminLayout>
+
+    );
+
+}
 
     return (
 
     <AdminLayout>
 
     <Header />
+        
+            <div className="mb-6 grid gap-4 lg:grid-cols-5">
 
-    <div className="p-10 text-center">
+            <input
+                type="text"
+                placeholder="Search customer or order..."
+                value={searchInput}
+                onChange={(e) => {
+                    setPage(1);
+                    setSearchInput(e.target.value);
+                }}
+                className="rounded-xl border border-[#e8ddd4] px-4 py-3"
+            />
 
-    Loading orders...
+            <select
+                value={orderStatus}
+                onChange={(e) => {
+                    setPage(1);
+                    setOrderStatus(e.target.value);
+                }}
+                className="rounded-xl border border-[#e8ddd4] px-4 py-3"
+            >
+                <option value="">All Orders</option>
+                <option value="new">New</option>
+                <option value="processing">Processing</option>
+                <option value="ready">Ready</option>
+                <option value="delivered">Delivered</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
 
-    </div>
+            <select
+                value={paymentStatus}
+                onChange={(e) => {
+                    setPage(1);
+                    setPaymentStatus(e.target.value);
+                }}
+                className="rounded-xl border border-[#e8ddd4] px-4 py-3"
+            >
+                <option value="">All Payments</option>
+                <option value="pending">Pending</option>
+                <option value="paid">Paid</option>
+            </select>
 
-    </AdminLayout>
+            <input
+                type="date"
+                value={startDate}
+                onChange={(e) => {
+                    setPage(1);
+                    setStartDate(e.target.value);
+                }}
+                className="rounded-xl border border-[#e8ddd4] px-4 py-3"
+            />
 
-    )
+            <input
+                type="date"
+                value={endDate}
+                onChange={(e) => {
+                    setPage(1);
+                    setEndDate(e.target.value);
+                }}
+                className="rounded-xl border border-[#e8ddd4] px-4 py-3"
+            />
 
-    }
-
-
-
-
-
-    return (
-
-    <AdminLayout>
-
-    <Header />
+        </div>
+        <p className="mt-2 text-[#7a6a61]">
+              {pagination.total ?? 0} order(s) found
+          </p>
 
 
     <div className="mb-8">
 
 
     <p className="text-xs uppercase tracking-[0.3em] text-[#c2a67a]">
-
     Orders
-
     </p>
-
 
     <h1 className="font-serif text-5xl text-[#5a4a42]">
-
     Customer Orders
-
     </h1>
 
-
     <p className="mt-2 text-[#7a6a61]">
-
     Manage customer purchases and deliveries.
-
     </p>
-
-
     </div>
 
-
-
-
-
-
     <div className="rounded-3xl bg-white shadow-sm overflow-hidden">
+        <table className="w-full">
+            <thead className="bg-[#eee6df]">
+            <tr>
+
+            <th className="p-4 text-left">
+            Order
+            </th>
 
 
-    <table className="w-full">
+            <th className="p-4 text-left">
+            Customer
+            </th>
 
 
-    <thead className="bg-[#eee6df]">
-
-    <tr>
-
-    <th className="p-4 text-left">
-    Order
-    </th>
+            <th className="p-4 text-left">
+            Items
+            </th>
 
 
-    <th className="p-4 text-left">
-    Customer
-    </th>
+            <th className="p-4 text-left">
+            Payment
+            </th>
 
 
-    <th className="p-4 text-left">
-    Items
-    </th>
+            <th className="p-4 text-left">
+            Status
+            </th>
 
 
-    <th className="p-4 text-left">
-    Payment
-    </th>
+            </tr>
 
-
-    <th className="p-4 text-left">
-    Status
-    </th>
-
-
-    </tr>
-
-    </thead>
-
-
-
-
+            </thead>
 
     <tbody>
-
-
     {orders.map((order)=>(
-
-
     <tr
     key={order.id}
     className="border-t"
@@ -238,159 +314,137 @@ function Orders() {
 
 
     </td>
+        <td className="p-4">
 
+        <p>
+        {order.customer_name}
+        </p>
 
+        <p className="text-sm text-gray-500">
+        {order.customer_phone}
+        </p>
 
+        </td>
 
+        <td className="p-4">
 
-    <td className="p-4">
+        {order.items.map(item=>(
 
-    <p>
-    {order.customer_name}
-    </p>
+        <div key={item.id}>
 
-    <p className="text-sm text-gray-500">
-    {order.customer_phone}
-    </p>
+        {item.product_name}
+        x {item.quantity}
 
-    </td>
+        </div>
 
+        ))}
 
 
+        </td>
 
+        <td className="p-4">
 
 
-    <td className="p-4">
+        <select
 
-    {order.items.map(item=>(
+        value={order.payment_status}
 
-    <div key={item.id}>
+        onChange={(e)=>
+        handleStatusChange(
+        order.id,
+        "payment_status",
+        e.target.value
+        )
+        }
 
-    {item.product_name}
-    x {item.quantity}
+        className="rounded-lg border px-3 py-2"
 
-    </div>
+        >
 
-    ))}
 
+        <option value="pending">
+        Pending
+        </option>
 
-    </td>
 
+        <option value="paid">
+        Paid
+        </option>
 
 
+        </select>
 
 
+        </td>
 
+        <td className="p-4">
 
-    <td className="p-4">
 
+        <select
 
-    <select
+        value={order.order_status}
 
-    value={order.payment_status}
+        onChange={(e)=>
+        handleStatusChange(
+        order.id,
+        "order_status",
+        e.target.value
+        )
+        }
 
-    onChange={(e)=>
-    handleStatusChange(
-    order.id,
-    "payment_status",
-    e.target.value
-    )
-    }
+        className="rounded-lg border px-3 py-2"
 
-    className="rounded-lg border px-3 py-2"
+        >
 
-    >
 
+        <option value="new">
+        New
+        </option>
+        <option value="processing">
+        Processing
+        </option>
+        <option value="ready">
+        Ready
+        </option>
+        <option value="delivered">
+        Delivered
+        </option>
 
-    <option value="pending">
-    Pending
-    </option>
+        <option value="cancelled">
+        Cancelled
+        </option>
 
 
-    <option value="paid">
-    Paid
-    </option>
-
-
-    </select>
-
-
-    </td>
-
-
-
-
-
-
-
-    <td className="p-4">
-
-
-    <select
-
-    value={order.order_status}
-
-    onChange={(e)=>
-    handleStatusChange(
-    order.id,
-    "order_status",
-    e.target.value
-    )
-    }
-
-    className="rounded-lg border px-3 py-2"
-
-    >
-
-
-    <option value="new">
-    New
-    </option>
-
-
-    <option value="processing">
-    Processing
-    </option>
-
-
-    <option value="ready">
-    Ready
-    </option>
-
-
-    <option value="delivered">
-    Delivered
-    </option>
-
-
-    <option value="cancelled">
-    Cancelled
-    </option>
-
-
-
-    </select>
-
-
-    </td>
-
-
-
-
-
-
-    </tr>
-
-
-    ))}
-
-
-
-    </tbody>
-
-
-    </table>
-
+        </select>
+        </td>
+
+        </tr>
+        ))}
+
+        </tbody>
+        </table>
+        </div>
+        <div className="mt-6 flex items-center justify-between">
+
+      <button
+        onClick={() => setPage(page - 1)}
+        disabled={!pagination.has_previous}
+        className="rounded-xl border border-[#c2a67a] px-4 py-2 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Previous
+      </button>
+
+      <p className="text-sm text-[#7a6a61]">
+        Page {pagination.page || 1} of {pagination.pages || 1}
+      </p>
+
+      <button
+        onClick={() => setPage(page + 1)}
+        disabled={!pagination.has_next}
+        className="rounded-xl bg-[#c2a67a] px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Next
+      </button>
 
     </div>
 

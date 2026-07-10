@@ -39,19 +39,39 @@ def login():
 @jwt_required()
 def dashboard():
 
+    recent_orders = (
+        Order.query
+        .order_by(Order.created_at.desc())
+        .limit(5)
+        .all()
+    )
+
     return jsonify({
         "products": Product.query.count(),
 
         "orders": Order.query.count(),
 
-        "pending_orders":
-            Order.query.filter_by(
-                payment_status="pending"
-            ).count(),
+        "pending_orders": Order.query.filter_by(
+            order_status="new"
+        ).count(),
 
-        "messages":
-            ContactMessage.query.count()
-    })
+        "messages": 0,
+
+        "recent_orders": [
+            {
+                "id": order.id,
+                "order_number": order.order_number,
+                "customer_name": order.customer_name,
+                "total_price": sum(
+                    item.unit_price * item.quantity
+                    for item in order.items
+                ),
+                "status": order.order_status,
+                "created_at": order.created_at.isoformat()
+            }
+            for order in recent_orders
+        ]
+    }), 200
 
 # data = request.get_json()
 

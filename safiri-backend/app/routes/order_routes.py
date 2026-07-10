@@ -4,6 +4,8 @@ from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.product import Product
 from flask_jwt_extended import jwt_required
+from sqlalchemy import or_
+from datetime import datetime
 
 order_bp = Blueprint("order_bp", __name__)
 
@@ -11,9 +13,75 @@ order_bp = Blueprint("order_bp", __name__)
 @order_bp.get("/")
 @jwt_required()
 def get_orders():
-    orders = Order.query.order_by(Order.created_at.desc()).all()
-    return jsonify([order.to_dict() for order in orders]), 200
 
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 10, type=int)
+
+    search = request.args.get("search", "").strip()
+    order_status = request.args.get("order_status", "").strip()
+    payment_status = request.args.get("payment_status", "").strip()
+
+    start_date = request.args.get("start_date")
+    end_date = request.args.get("end_date")
+
+    query = Order.query
+
+    # Search
+    if search:
+        query = query.filter(
+            or_(
+                Order.customer_name.ilike(f"%{search}%"),
+                Order.order_number.ilike(f"%{search}%"),
+                Order.customer_phone.ilike(f"%{search}%")
+            )
+        )
+
+    # Order status
+    if order_status:
+        query = query.filter(
+            Order.order_status == order_status
+        )
+
+    # Payment status
+    if payment_status:
+        query = query.filter(
+            Order.payment_status == payment_status
+        )
+
+    # Date range
+    if start_date:
+        query = query.filter(
+            Order.created_at >= datetime.fromisoformat(start_date)
+        )
+
+    if end_date:
+        query = query.filter(
+            Order.created_at <= datetime.fromisoformat(end_date)
+        )
+
+    pagination = (
+        query
+        .order_by(Order.created_at.desc())
+        .paginate(
+            page=page,
+            per_page=per_page,
+            error_out=False
+        )
+    )
+
+    return jsonify({
+        "orders": [
+            order.to_dict()
+            for order in pagination.items
+        ],
+        "pagination": {
+            "page": pagination.page,
+            "pages": pagination.pages,
+            "total": pagination.total,
+            "has_next": pagination.has_next,
+            "has_previous": pagination.has_prev
+        }
+    }), 200
 
 @order_bp.post("/")
 def create_order():
