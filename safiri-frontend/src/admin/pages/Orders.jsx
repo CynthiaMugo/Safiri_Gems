@@ -9,7 +9,7 @@ import {
 } from "../services/adminOrderService";
 
 import toast from "react-hot-toast";
-
+import OrderDetailsDrawer from "../components/OrderDetailsDrawer";
 
 
 
@@ -26,6 +26,14 @@ function Orders() {
 
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    function openOrder(order) {
+        setSelectedOrder(order);
+        setDrawerOpen(true);
+    }
 
     useEffect(() => {
       const timeout = setTimeout(() => {
@@ -109,6 +117,37 @@ function Orders() {
         }
 
     }
+    function getPaymentStyles(status) {
+        switch (status) {
+            case "paid":
+            return "bg-green-50 text-green-700 border-green-200";
+
+            default:
+            return "bg-amber-50 text-amber-700 border-amber-200";
+        }
+    }
+
+    function getOrderStyles(status) {
+        switch (status) {
+            case "new":
+            return "bg-blue-50 text-blue-700 border-blue-200";
+
+            case "processing":
+            return "bg-orange-50 text-orange-700 border-orange-200";
+
+            case "ready":
+            return "bg-purple-50 text-purple-700 border-purple-200";
+
+            case "delivered":
+            return "bg-green-50 text-green-700 border-green-200";
+
+            case "cancelled":
+            return "bg-red-50 text-red-700 border-red-200";
+
+            default:
+            return "bg-gray-50 text-gray-700 border-gray-200";
+        }
+    }
 
     if (loading) {
 
@@ -169,6 +208,20 @@ function Orders() {
     <AdminLayout>
 
     <Header />
+        <div className="mb-8">
+
+            <p className="text-xs uppercase tracking-[0.3em] text-[#c2a67a]">
+            Orders
+            </p>
+
+            <h1 className="font-serif text-5xl text-[#5a4a42]">
+            Customer Orders
+            </h1>
+
+            <p className="mt-2 text-[#7a6a61]">
+            Manage customer purchases and deliveries.
+            </p>
+        </div>
         
             <div className="mb-6 grid gap-4 lg:grid-cols-5">
 
@@ -238,21 +291,7 @@ function Orders() {
           </p>
 
 
-    <div className="mb-8">
-
-
-    <p className="text-xs uppercase tracking-[0.3em] text-[#c2a67a]">
-    Orders
-    </p>
-
-    <h1 className="font-serif text-5xl text-[#5a4a42]">
-    Customer Orders
-    </h1>
-
-    <p className="mt-2 text-[#7a6a61]">
-    Manage customer purchases and deliveries.
-    </p>
-    </div>
+    
 
     <div className="rounded-3xl bg-white shadow-sm overflow-hidden">
         <table className="w-full">
@@ -292,9 +331,9 @@ function Orders() {
     {orders.map((order)=>(
     <tr
     key={order.id}
-    className="border-t"
+    onClick={() => openOrder(order)}
+    className="cursor-pointer border-t transition hover:bg-[#faf7f4]"
     >
-
 
     <td className="p-4">
 
@@ -447,14 +486,16 @@ function Orders() {
       </button>
 
     </div>
-
-
+    <OrderDetailsDrawer
+        order={selectedOrder}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+    />
 
     </AdminLayout>
 
     )
 
     }
-
 
     export default Orders;
