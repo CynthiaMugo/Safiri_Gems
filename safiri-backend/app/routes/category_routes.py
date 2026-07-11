@@ -22,3 +22,4 @@ def create_category():
     db.session.commit()
 
     return jsonify(category.to_dict()), 201
+

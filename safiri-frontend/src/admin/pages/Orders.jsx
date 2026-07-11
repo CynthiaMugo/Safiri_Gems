@@ -10,6 +10,7 @@ import {
 
 import toast from "react-hot-toast";
 import OrderDetailsDrawer from "../components/OrderDetailsDrawer";
+import { Phone } from "lucide-react";
 
 
 
@@ -325,32 +326,42 @@ function Orders() {
     >
 
     <td className="px-4 py-5 align-top">
+        <p className="font-semibold text-[#5a4a42] tracking-wide">
+            {order.order_number}
+        </p>
 
-    <p className="font-medium">
+        <p className="mt-1 text-xs text-[#9a8d84]">
+        {new Date(order.created_at).toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+        })}
 
-    {order.order_number}
+        {" • "}
 
+        {new Date(order.created_at).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+        })}
     </p>
-
-
-    <p className="text-xs text-gray-500">
-
-    {new Date(order.created_at)
-    .toLocaleDateString()}
-
-    </p>
-
 
     </td>
         <td className="px-4 py-5 align-top">
 
-        <p>
-        {order.customer_name}
-        </p>
+            <p className="font-medium text-[#5a4a42]">
+                {order.customer_name}
+            </p>
 
-        <p className="text-sm text-gray-500">
-        {order.customer_phone}
-        </p>
+            <div className="mt-1 flex items-center gap-2 text-sm text-[#8d8178]">
+                <Phone size={12} />
+                <span>{order.customer_phone}</span>
+            </div>
+
+            {order.customer_email && (
+                <p className="mt-1 text-xs text-[#b8aaa0] truncate max-w-[180px]">
+                    {order.customer_email}
+                </p>
+            )}
 
         </td>
         <td className="px-4 py-5 align-top">
