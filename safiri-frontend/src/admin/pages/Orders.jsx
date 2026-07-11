@@ -297,32 +297,21 @@ function Orders() {
         <table className="w-full">
             <thead className="bg-[#eee6df]">
             <tr>
-
             <th className="p-4 text-left">
             Order
             </th>
-
-
             <th className="p-4 text-left">
             Customer
             </th>
-
-
             <th className="p-4 text-left">
             Items
             </th>
-
-
             <th className="p-4 text-left">
             Payment
             </th>
-
-
             <th className="p-4 text-left">
             Status
             </th>
-
-
             </tr>
 
             </thead>
@@ -335,7 +324,7 @@ function Orders() {
     className="cursor-pointer border-t transition hover:bg-[#faf7f4]"
     >
 
-    <td className="p-4">
+    <td className="px-4 py-5 align-top">
 
     <p className="font-medium">
 
@@ -353,7 +342,7 @@ function Orders() {
 
 
     </td>
-        <td className="p-4">
+        <td className="px-4 py-5 align-top">
 
         <p>
         {order.customer_name}
@@ -364,30 +353,41 @@ function Orders() {
         </p>
 
         </td>
+        <td className="px-4 py-5 align-top">
 
-        <td className="p-4">
+            <div className="space-y-1">
 
-        {order.items.map(item=>(
+                <p className="text-sm font-semibold text-[#5a4a42]">
+                    {order.items.length} item{order.items.length > 1 ? "s" : ""}
+                </p>
 
-        <div key={item.id}>
+                {order.items.slice(0, 2).map((item) => (
 
-        {item.product_name}
-        x {item.quantity}
+                    <p
+                        key={item.id}
+                        className="truncate text-sm text-[#7a6a61]"
+                    >
+                        • {item.product_name}
+                    </p>
 
-        </div>
+                ))}
 
-        ))}
+                {order.items.length > 2 && (
 
+                    <p className="text-xs font-medium text-[#c2a67a]">
+                        +{order.items.length - 2} more
+                    </p>
+
+                )}
+
+            </div>
 
         </td>
 
-        <td className="p-4">
-
-
-        <select
-
-        value={order.payment_status}
-
+        <td className="px-4 py-5 align-top"
+            onClick={(e) => e.stopPropagation()}
+        >
+        <select value={order.payment_status}
         onChange={(e)=>
         handleStatusChange(
         order.id,
@@ -396,8 +396,9 @@ function Orders() {
         )
         }
 
-        className="rounded-lg border px-3 py-2"
-
+        className={`rounded-xl border px-4 py-2 font-medium transition focus:outline-none
+            ${getPaymentStyles(order.payment_status)}
+            `}
         >
 
 
@@ -412,13 +413,11 @@ function Orders() {
 
 
         </select>
-
-
         </td>
 
-        <td className="p-4">
-
-
+        <td className="px-4 py-5 align-top"
+            onClick={(e) => e.stopPropagation()}
+        >
         <select
 
         value={order.order_status}
@@ -431,10 +430,10 @@ function Orders() {
         )
         }
 
-        className="rounded-lg border px-3 py-2"
-
+        className={`rounded-xl border px-4 py-2 font-medium transitionfocus:outline-none
+        ${getOrderStyles(order.order_status)}
+        `}
         >
-
 
         <option value="new">
         New
