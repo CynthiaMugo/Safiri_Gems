@@ -51,7 +51,36 @@ def get_messages():
             "name": msg.name,
             "email": msg.email,
             "message": msg.message,
-            "created_at": msg.created_at
+            "created_at": msg.created_at,
+            "is_read": msg.is_read
         }
         for msg in messages
     ])
+
+@message_bp.route("/<int:id>/read", methods=["PUT"])
+@jwt_required()
+def mark_as_read(id):
+
+    message = ContactMessage.query.get_or_404(id)
+
+    message.is_read = True
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "Message marked as read"
+    })
+
+@message_bp.route("/<int:id>", methods=["DELETE"])
+@jwt_required()
+def delete_message(id):
+
+    message = ContactMessage.query.get_or_404(id)
+
+    db.session.delete(message)
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "Message deleted"
+    })

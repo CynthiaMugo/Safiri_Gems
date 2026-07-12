@@ -69,10 +69,12 @@ function Dashboard() {
         />
 
         <DashboardCard
-            title="Messages"
+            title="New Messages"
             value={stats.messages}
             icon={Mail}
-            color="bg-green-500"
+            color="bg-[#d6c3b3]"
+            onClick={() => navigate("/admin/messages")}
+
         />
         </div>
         <div className="mt-10 grid gap-8 lg:grid-cols-3">
@@ -194,30 +196,3 @@ function Dashboard() {
 
 export default Dashboard;
 
-{/* <ActionCard
-    title="Add Product"
-    description="Create a new jewelry listing."
-    icon={Plus}
-    onClick={() => navigate("/admin/products/new")}
-/>
-
-<ActionCard
-    title="Manage Orders"
-    description="View customer purchases."
-    icon={FolderOpen}
-    onClick={() => navigate("/admin/orders")}
-/>
-
-<ActionCard
-    title="Manage Categories"
-    description="Organize your collections."
-    icon={Tags}
-    onClick={() => navigate("/admin/categories")}
-/>
-
-<ActionCard
-    title="Messages"
-    description="Read customer enquiries."
-    icon={MessageSquare}
-    onClick={() => navigate("/admin/messages")}
-/> */}

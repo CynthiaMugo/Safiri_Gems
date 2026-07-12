@@ -4,7 +4,11 @@ import toast from "react-hot-toast";
 import AdminLayout from "../components/AdminLayout";
 import Header from "../components/Header";
 
-import { getMessages } from "../services/messageService";
+import {
+  getMessages,
+  markMessageRead,
+  deleteMessage
+} from "../services/messageService";
 
 
 function Messages() {
@@ -34,6 +38,50 @@ function Messages() {
   useEffect(() => {
     loadMessages();
   }, []);
+
+  async function handleRead(id) {
+
+  try {
+
+    await markMessageRead(id);
+
+    toast.success("Message marked as read");
+
+    loadMessages();
+
+  } catch(error){
+
+    toast.error("Unable to update message");
+
+  }
+}
+
+
+
+async function handleDelete(id){
+
+  const confirmed = window.confirm(
+    "Delete this message?"
+  );
+
+  if(!confirmed) return;
+
+
+  try{
+
+    await deleteMessage(id);
+
+    toast.success("Message deleted");
+
+    loadMessages();
+
+  }catch(error){
+
+    toast.error("Unable to delete message");
+
+  }
+
+}
 
 
 
@@ -79,6 +127,7 @@ function Messages() {
             ))}
 
           </div>
+          
 
         </div>
 
@@ -142,7 +191,7 @@ function Messages() {
               key={message.id}
               className="rounded-3xl bg-white p-7 shadow-sm transition hover:shadow-md"
             >
-
+                
 
               <div className="flex flex-col justify-between gap-3 md:flex-row">
 
@@ -181,6 +230,36 @@ function Messages() {
                 </p>
 
               </div>
+              {!message.is_read && (
+
+                    <span className="rounded-full bg-[#c2a67a] px-3 py-1 text-xs text-white">
+                    New
+                    </span>
+
+                    )}
+                    <div className="mt-5 flex gap-3">
+
+                    {!message.is_read && (
+
+                    <button
+                    onClick={() => handleRead(message.id)}
+                    className="rounded-xl bg-[#c2a67a] px-4 py-2 text-sm text-white"
+                    >
+                    Mark Read
+                    </button>
+
+                    )}
+
+
+                    <button
+                    onClick={() => handleDelete(message.id)}
+                    className="rounded-xl bg-[#5a4a42] px-4 py-2 text-sm text-white"
+                    >
+                    Delete
+                    </button>
+
+                    </div>
+
 
 
             </div>

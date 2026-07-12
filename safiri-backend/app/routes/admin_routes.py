@@ -55,7 +55,9 @@ def dashboard():
             order_status="new"
         ).count(),
 
-        "messages": 0,
+        "messages": ContactMessage.query.filter_by(
+            is_read=False
+        ).count(),
 
         "recent_orders": [
             {

@@ -5,9 +5,18 @@ function DashboardCard({
   value,
   icon: Icon,
   color,
+  onClick
 }) {
   return (
-    <div className="rounded-3xl bg-white p-6 shadow-sm hover:shadow-lg transition">
+    
+      <div
+      onClick={onClick}
+      className={`rounded-3xl bg-white p-6 shadow-sm transition ${
+        onClick
+          ? "cursor-pointer hover:shadow-lg"
+          : ""
+      }`}
+    >
       <div className="flex items-center justify-between">
         <div>
           <p className="text-[#7a6a61]">
