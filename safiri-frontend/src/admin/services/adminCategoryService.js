@@ -15,8 +15,27 @@ export const getCategories = async () => {
 
 export const createCategory = async (category) => {
   const response = await api.post(
-    "/categories",
+    "/categories/",
     category,
+    authHeader()
+  );
+
+  return response.data;
+};
+
+export const updateCategory = async (id, category) => {
+  const response = await api.put(
+    `/categories/${id}`,
+    category,
+    authHeader()
+  );
+
+  return response.data;
+};
+
+export const deleteCategory = async (id) => {
+  const response = await api.delete(
+    `/categories/${id}`,
     authHeader()
   );
 

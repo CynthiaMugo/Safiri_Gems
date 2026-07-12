@@ -174,14 +174,14 @@ function Dashboard() {
                   title="Manage Categories"
                   description="Edit product collections."
                   icon={Tags}
-                  onClick={() => console.log("Categories")}
+                  onClick={() => navigate("/admin/categories")}
               />
 
               <ActionCard
                   title="Messages"
                   description="Respond to customer enquiries."
                   icon={MessageSquare}
-                  onClick={() => console.log("Messages")}
+                  onClick={() => navigate("/admin/messages")}
               />
           </div>
           </div>

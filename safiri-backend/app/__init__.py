@@ -29,11 +29,13 @@ def create_app():
     from .routes.category_routes import category_bp
     from .routes.order_routes import order_bp
     from .routes.admin_routes import auth_bp
+    from .routes.message_routes import message_bp
 
     app.register_blueprint(product_bp, url_prefix="/products")
     app.register_blueprint(category_bp, url_prefix="/categories")
     app.register_blueprint(order_bp, url_prefix="/orders")
     app.register_blueprint(auth_bp, url_prefix="/admin")
+    app.register_blueprint(message_bp, url_prefix="/messages")
     
 
     return app
