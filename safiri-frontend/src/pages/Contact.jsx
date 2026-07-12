@@ -2,10 +2,47 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Phone, MessageCircle, MapPin } from "lucide-react";
 import { FaInstagram } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { sendMessage } from "../services/messageService";
 import PageTransition from "../components/PageTransition";
 
 function Contact() {
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: ""
+  });
+
+  const [status, setStatus] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await sendMessage(formData);
+
+      setStatus("Message sent successfully!");
+
+      setFormData({
+        name: "",
+        email: "",
+        message: ""
+      });
+
+    } catch (error) {
+      setStatus("Something went wrong. Please try again.");
+    }
+  };
+
   useEffect(() => {
     document.title = "Contact Safiri Gems | Order Jewelry in Nairobi";
   }, []);
@@ -90,31 +127,61 @@ function Contact() {
             </div>
 
             <div className="rounded-[2rem] bg-[#5a4a42] p-8 text-white shadow-sm">
-              <h2 className="font-serif text-3xl mb-6">
-                Order Notes
-              </h2>
 
-              <div className="space-y-5 text-white/75 leading-relaxed">
-                <p>
-                  You can place your order through the cart and confirm it via
-                  WhatsApp.
-                </p>
+<h2 className="font-serif text-3xl mb-6">
+  Send Us A Message
+</h2>
 
-                <p>
-                  Payment is currently made through Till Number. The Till Number
-                  will be shared clearly during order confirmation.
-                </p>
+<form onSubmit={handleSubmit} className="space-y-5">
 
-                <p>
-                  For custom requests, gift packaging, or delivery questions,
-                  contact Safiri Gems directly on WhatsApp.
-                </p>
-              </div>
+  <input
+    type="text"
+    name="name"
+    placeholder="Your Name"
+    value={formData.name}
+    onChange={handleChange}
+    className="w-full rounded-xl bg-white p-3 text-[#5a4a42] placeholder:text-[#9b8b80] outline-none"
+  />
 
-              <p className="mt-8 font-serif text-2xl text-[#d6c3b3]">
-                “Elegance is never loud.”
-              </p>
-            </div>
+
+  <input
+    type="email"
+    name="email"
+    placeholder="Your Email"
+    value={formData.email}
+    onChange={handleChange}
+    className="w-full rounded-xl bg-white p-3 text-[#5a4a42] placeholder:text-[#9b8b80] outline-none"
+  />
+
+
+  <textarea
+    name="message"
+    placeholder="Your Message"
+    rows="5"
+    value={formData.message}
+    onChange={handleChange}
+    className="w-full rounded-xl bg-white p-3 text-[#5a4a42] placeholder:text-[#9b8b80] outline-none"
+  />
+
+
+<button
+  type="submit"
+  className="rounded-full bg-[#c2a67a] px-7 py-3 text-sm font-medium text-white transition hover:bg-white hover:text-[#5a4a42]"
+>
+ Send Message
+</button>
+
+</form>
+
+{
+status && (
+<p className="mt-4 text-[#d6c3b3]">
+{status}
+</p>
+)
+}
+
+</div>
           </div>
         </section>
       </main>

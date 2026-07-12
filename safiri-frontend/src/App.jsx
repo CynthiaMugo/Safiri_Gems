@@ -10,6 +10,9 @@ import AdminLogin from "./admin/pages/AdminLogin";
 import Dashboard from "./admin/pages/Dashboard";
 import ProtectedRoute from "./admin/components/ProtectedRoute";
 import Products from "./admin/pages/Products";
+import Orders from "./admin/pages/Orders";
+import Categories from "./admin/pages/Categories";
+import Messages from "./admin/pages/Messages";
 
 function App() {
   return (
@@ -38,7 +41,29 @@ function App() {
       />
       <Route
         path="/admin/products"
-        element={<Products />}
+        element={
+          <ProtectedRoute>
+        <Products />
+          </ProtectedRoute>}
+      />
+      <Route
+      path="/admin/orders"
+      element={
+        <ProtectedRoute>
+      <Orders />
+        </ProtectedRoute>}
+      />
+      <Route path="/admin/categories"
+      element={
+        <ProtectedRoute>
+      <Categories />
+        </ProtectedRoute>}
+      />
+      <Route path="/admin/messages"
+      element={
+        <ProtectedRoute>
+      <Messages />
+        </ProtectedRoute>}
       />
     </Routes>
     

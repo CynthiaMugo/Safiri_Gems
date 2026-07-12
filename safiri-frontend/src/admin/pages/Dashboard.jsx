@@ -69,21 +69,84 @@ function Dashboard() {
         />
 
         <DashboardCard
-            title="Messages"
+            title="New Messages"
             value={stats.messages}
             icon={Mail}
-            color="bg-green-500"
+            color="bg-[#d6c3b3]"
+            onClick={() => navigate("/admin/messages")}
+
         />
         </div>
         <div className="mt-10 grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 rounded-3xl bg-white p-8 shadow-sm">
-          <h2 className="font-serif text-3xl mb-6 text-[#5a4a42]">
-            Recent Orders
+
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-serif text-3xl text-[#5a4a42]">
+              Recent Orders
             </h2>
 
+            <span className="text-sm text-[#c2a67a]">
+              Latest 5
+            </span>
+          </div>
+
+
+          {stats.recent_orders.length === 0 ? (
+
             <p className="text-[#7a6a61]">
-            Orders will appear here once customers begin purchasing.
+              No orders yet.
             </p>
+
+          ) : (
+
+            <div className="space-y-4">
+
+              {stats.recent_orders.map((order) => (
+
+                <div
+                  key={order.id}
+                  className="flex items-center justify-between rounded-2xl bg-[#f8f5f2] p-4"
+                >
+
+                  <div>
+                    <p className="font-medium text-[#5a4a42]">
+                      {order.order_number}
+                    </p>
+
+                    <p className="text-sm text-[#7a6a61]">
+                      {order.customer_name}
+                    </p>
+                  </div>
+
+
+                  <div className="text-right">
+
+                    <p className="font-medium">
+                      KSh {order.total_price.toLocaleString()}
+                    </p>
+
+                    <span
+                      className={`text-xs rounded-full px-3 py-1 ${
+                        order.status === "new"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : order.status === "delivered"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      {order.status}
+                    </span>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+
+          )}
+
         </div>
         <div className="rounded-3xl bg-white p-8 shadow-sm">
           <p className="mb-2 text-xs uppercase tracking-[0.3em] text-[#c2a67a]">
@@ -106,21 +169,21 @@ function Dashboard() {
                   title="Manage Orders"
                   description="View and update customer orders."
                   icon={FolderOpen}
-                  onClick={() => console.log("Orders")}
+                  onClick={() => navigate("/admin/orders")}
               />
 
               <ActionCard
                   title="Manage Categories"
                   description="Edit product collections."
                   icon={Tags}
-                  onClick={() => console.log("Categories")}
+                  onClick={() => navigate("/admin/categories")}
               />
 
               <ActionCard
                   title="Messages"
                   description="Respond to customer enquiries."
                   icon={MessageSquare}
-                  onClick={() => console.log("Messages")}
+                  onClick={() => navigate("/admin/messages")}
               />
           </div>
           </div>
@@ -133,30 +196,3 @@ function Dashboard() {
 
 export default Dashboard;
 
-{/* <ActionCard
-    title="Add Product"
-    description="Create a new jewelry listing."
-    icon={Plus}
-    onClick={() => navigate("/admin/products/new")}
-/>
-
-<ActionCard
-    title="Manage Orders"
-    description="View customer purchases."
-    icon={FolderOpen}
-    onClick={() => navigate("/admin/orders")}
-/>
-
-<ActionCard
-    title="Manage Categories"
-    description="Organize your collections."
-    icon={Tags}
-    onClick={() => navigate("/admin/categories")}
-/>
-
-<ActionCard
-    title="Messages"
-    description="Read customer enquiries."
-    icon={MessageSquare}
-    onClick={() => navigate("/admin/messages")}
-/> */}

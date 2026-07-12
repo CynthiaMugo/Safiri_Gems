@@ -27,3 +27,8 @@ class ContactMessage(db.Model):
         db.DateTime,
         server_default=db.func.now()
     )
+
+    is_read = db.Column(
+        db.Boolean,
+        default=False
+    )
