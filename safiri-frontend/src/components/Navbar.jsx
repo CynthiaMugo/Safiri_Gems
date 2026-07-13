@@ -49,13 +49,13 @@ function Navbar() {
         </ul>
 
         <div className="flex items-center gap-4 text-[#5a4a42]">
-          <button
+          {/* <button
             type="button"
             aria-label="Search"
             className="rounded-full bg-white/60 p-2 transition hover:bg-[#e8ddd4]"
           >
             <Search size={18} />
-          </button>
+          </button> */}
 
           <Link
             to="/cart"
