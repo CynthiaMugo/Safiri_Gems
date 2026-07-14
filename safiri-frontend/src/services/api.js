@@ -3,9 +3,9 @@ import toast from "react-hot-toast";
 
 const api = axios.create({
   baseURL: "http://127.0.0.1:5000",
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
 });
 
 api.interceptors.response.use(

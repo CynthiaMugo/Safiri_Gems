@@ -27,6 +27,10 @@ function ProductModal({
     is_featured: false,
   });
 
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState("");
+  const [saving, setSaving] = useState(false);
+
   useEffect(() => {
     async function loadCategories() {
       try {
@@ -51,6 +55,11 @@ function ProductModal({
         category_id: editingProduct.category_id,
         is_featured: editingProduct.is_featured,
       });
+
+      // Show existing Cloudinary image
+      setPreview(editingProduct.image_url || "");
+      setImage(null);
+
     } else {
       setFormData({
         name: "",
@@ -61,6 +70,9 @@ function ProductModal({
         category_id: "",
         is_featured: false,
       });
+
+      setPreview("");
+      setImage(null);
     }
   }, [editingProduct]);
 
@@ -73,15 +85,32 @@ function ProductModal({
     }));
   }
 
+  function handleImageChange(e) {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const payload = {
-      ...formData,
-      price: Number(formData.price),
-      stock: Number(formData.stock),
-      category_id: Number(formData.category_id),
-    };
+    setSaving(true);
+
+    const payload = new FormData();
+
+    payload.append("name", formData.name);
+    payload.append("description", formData.description);
+    payload.append("price", formData.price);
+    payload.append("stock", formData.stock);
+    payload.append("category_id", formData.category_id);
+    payload.append("is_featured", formData.is_featured);
+
+    if (image) {
+      payload.append("image", image);
+    }
 
     try {
       if (editingProduct) {
@@ -98,6 +127,7 @@ function ProductModal({
 
       onSuccess();
       onClose();
+
     } catch (error) {
       console.error(error);
 
@@ -106,9 +136,10 @@ function ProductModal({
           ? "Unable to update product"
           : "Unable to create product"
       );
+    } finally {
+      setSaving(false);
     }
   }
-
   if (!isOpen) return null;
 
   return (
@@ -129,7 +160,8 @@ function ProductModal({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-2 transition hover:bg-[#eee6df]"
+            disabled={saving}
+            className="rounded-full p-2 transition hover:bg-[#eee6df] disabled:opacity-50"
           >
             <X />
           </button>
@@ -181,6 +213,8 @@ function ProductModal({
               </label>
 
               <input
+                min="1"
+                step="0.01"
                 type="number"
                 name="price"
                 value={formData.price}
@@ -196,6 +230,7 @@ function ProductModal({
               </label>
 
               <input
+                min="0"
                 type="number"
                 name="stock"
                 value={formData.stock}
@@ -236,19 +271,42 @@ function ProductModal({
           {/* Image URL */}
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-[#5a4a42]">
-              Image URL
-            </label>
+          <label className="mb-2 block text-sm font-medium text-[#5a4a42]">
+            Product Image
+          </label>
 
-            <input
-              type="text"
-              name="image_url"
-              value={formData.image_url}
-              onChange={handleChange}
-              placeholder="https://..."
-              className="w-full rounded-xl border border-[#e5d7ca] bg-white p-3 focus:outline-none focus:ring-2 focus:ring-[#c2a67a]"
-            />
-          </div>
+          <input
+              id="image-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+          />
+           
+
+          <label
+              htmlFor="image-upload"
+              className="cursor-pointer rounded-xl border border-dashed border-[#c2a67a] bg-white p-2 text-center block hover:bg-[#fdfaf8]"
+          >
+              Click to upload an image
+          </label>
+          {image && (
+            <p className="mt-2 text-sm text-[#7a6a61]">
+                Selected:
+                <span className="font-medium">
+                    {image.name}
+                </span>
+            </p>
+
+            )}   
+          {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                className="mt-4 h-56 w-full rounded-2xl object-cover border border-[#e5d7ca]"
+              />
+            )}
+        </div>
 
           {/* Featured */}
 
@@ -272,16 +330,29 @@ function ProductModal({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-[#c2a67a] px-6 py-3 text-[#5a4a42] transition hover:bg-[#eee6df]"
+              disabled={saving}
+              className="rounded-xl border border-[#c2a67a] px-6 py-3 text-[#5a4a42] transition hover:bg-[#eee6df] disabled:opacity-50"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="rounded-xl bg-[#c2a67a] px-6 py-3 font-medium text-white transition hover:bg-[#5a4a42]"
+              disabled={saving}
+              className={`rounded-xl px-6 py-3 font-medium text-white transition
+                ${
+                  saving
+                    ? "cursor-not-allowed bg-[#d8c5a8]"
+                    : "bg-[#c2a67a] hover:bg-[#5a4a42]"
+                }`}
             >
-              {editingProduct ? "Update Product" : "Save Product"}
+              {saving
+                ? editingProduct
+                  ? "Updating..."
+                  : "Saving..."
+                : editingProduct
+                ? "Update Product"
+                : "Save Product"}
             </button>
           </div>
         </form>

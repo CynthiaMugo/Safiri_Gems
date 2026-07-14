@@ -10,6 +10,7 @@ function Contact() {
 
   const [formData, setFormData] = useState({
     name: "",
+    phone: "",
     email: "",
     message: ""
   });
@@ -34,6 +35,7 @@ function Contact() {
 
       setFormData({
         name: "",
+        phone: "",
         email: "",
         message: ""
       });
@@ -142,6 +144,14 @@ function Contact() {
     onChange={handleChange}
     className="w-full rounded-xl bg-white p-3 text-[#5a4a42] placeholder:text-[#9b8b80] outline-none"
   />
+  <input
+  type="tel"
+  name="phone"
+  placeholder="Your Phone Number"
+  value={formData.phone}
+  onChange={handleChange}
+  className="w-full rounded-xl bg-white p-3 text-[#5a4a42] placeholder:text-[#9b8b80] outline-none"
+/>
 
 
   <input

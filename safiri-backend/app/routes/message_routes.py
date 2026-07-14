@@ -15,6 +15,7 @@ def create_message():
         return jsonify({"message": "No data provided"}), 400
 
     name = data.get("name")
+    phone = data.get("phone")
     email = data.get("email")
     message = data.get("message")
 
@@ -25,6 +26,7 @@ def create_message():
 
     new_message = ContactMessage(
         name=name,
+        phone=phone,
         email=email,
         message=message
     )
@@ -49,6 +51,7 @@ def get_messages():
         {
             "id": msg.id,
             "name": msg.name,
+            "phone": msg.phone,
             "email": msg.email,
             "message": msg.message,
             "created_at": msg.created_at,

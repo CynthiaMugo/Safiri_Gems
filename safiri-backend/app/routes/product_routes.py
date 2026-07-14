@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from app.db import db
 from app.models.product import Product
 from flask_jwt_extended import jwt_required
+from app.utils.cloudinary import upload_image
 
 product_bp = Blueprint("product_bp", __name__)
 
@@ -20,16 +21,23 @@ def get_product(product_id):
 @product_bp.post("/")
 @jwt_required()
 def create_product():
-    data = request.get_json()
+    form = request.form
+    image = request.files.get("image")
+    image_url = None
+    print(form)
+    print(request.files)
+
+    if image:
+        image_url = upload_image(image)
 
     product = Product(
-        name=data.get("name"),
-        description=data.get("description"),
-        price=data.get("price"),
-        image_url=data.get("image_url"),
-        stock=data.get("stock", 0),
-        is_featured=data.get("is_featured", False),
-        category_id=data.get("category_id")
+        name=form.get("name"),
+        description=form.get("description"),
+        price=float(form.get("price")),
+        stock=int(form.get("stock")),
+        category_id=int(form.get("category_id")),
+        is_featured=form.get("is_featured") == "true",
+        image_url=image_url,
     )
 
     db.session.add(product)
@@ -45,16 +53,23 @@ def create_product():
 @jwt_required()
 def update_product(product_id):
     product = Product.query.get_or_404(product_id)
-    data = request.get_json()
+    form = request.form
+    image = request.files.get("image")
+    if image:
+        product.image_url = upload_image(image)
 
-    product.name = data.get("name", product.name)
-    product.description = data.get("description", product.description)
-    product.price = data.get("price", product.price)
-    product.image_url = data.get("image_url", product.image_url)
-    product.stock = data.get("stock", product.stock)
-    product.is_featured = data.get("is_featured", product.is_featured)
-    product.category_id = data.get("category_id", product.category_id)
+    if form.get("price"):
+        product.price = float(form.get("price"))
 
+    if form.get("stock"):
+        product.stock = int(form.get("stock"))
+
+    if form.get("category_id"):
+        product.category_id = int(form.get("category_id"))
+
+    product.name = form.get("name", product.name)
+    product.description = form.get("description", product.description)
+    product.is_featured = form.get("is_featured") == "true"
     db.session.commit()
 
     return jsonify(product.to_dict()), 200

@@ -12,6 +12,10 @@ class ContactMessage(db.Model):
         db.String(120),
         nullable=False
     )
+    phone = db.Column(
+        db.String(20),
+        nullable=True
+    )
 
     email = db.Column(
         db.String(120),

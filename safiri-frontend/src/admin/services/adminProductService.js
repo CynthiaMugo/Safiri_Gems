@@ -17,20 +17,20 @@ export const getAdminProducts = async () => {
   }));
 };
 
-export const createProduct = async (product) => {
+export const createProduct = async (formData) => {
   const response = await api.post(
-    "/products",
-    product,
+    "/products/",
+    formData,
     authHeader()
   );
 
   return response.data;
 };
 
-export const updateProduct = async (id, product) => {
+export const updateProduct = async (id, formData) => {
   const response = await api.put(
     `/products/${id}`,
-    product,
+    formData,
     authHeader()
   );
 
