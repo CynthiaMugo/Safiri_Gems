@@ -15,6 +15,8 @@ function Messages() {
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [messageToDelete, setMessageToDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
 
   async function loadMessages() {
@@ -41,47 +43,46 @@ function Messages() {
 
   async function handleRead(id) {
 
-  try {
+    try {
 
-    await markMessageRead(id);
+      await markMessageRead(id);
 
-    toast.success("Message marked as read");
+      toast.success("Message marked as read");
 
-    loadMessages();
+      loadMessages();
 
-  } catch(error){
+    } catch(error){
 
-    toast.error("Unable to update message");
+      toast.error("Unable to update message");
 
-  }
-}
-
-
-
-async function handleDelete(id){
-
-  const confirmed = window.confirm(
-    "Delete this message?"
-  );
-
-  if(!confirmed) return;
-
-
-  try{
-
-    await deleteMessage(id);
-
-    toast.success("Message deleted");
-
-    loadMessages();
-
-  }catch(error){
-
-    toast.error("Unable to delete message");
-
+    }
   }
 
-}
+
+
+  function handleDelete(message) {
+    setMessageToDelete(message);
+  }
+  async function confirmDelete() {
+    if (!messageToDelete) return;
+
+    try {
+      setDeleting(true);
+
+      await deleteMessage(messageToDelete.id);
+
+      toast.success("Message deleted");
+
+      setMessageToDelete(null);
+
+      loadMessages();
+    } catch (error) {
+      console.error(error);
+      toast.error("Unable to delete message");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
 
 
@@ -206,6 +207,11 @@ async function handleDelete(id){
                   <p className="text-sm text-[#7a6a61]">
                     {message.email}
                   </p>
+                  
+
+                <p className="text-sm text-[#7a6a61]">
+                  {message.phone}
+                </p>
 
                 </div>
 
@@ -252,11 +258,11 @@ async function handleDelete(id){
 
 
                     <button
-                    onClick={() => handleDelete(message.id)}
-                    className="rounded-xl bg-[#5a4a42] px-4 py-2 text-sm text-white"
-                    >
-                    Delete
-                    </button>
+  onClick={() => handleDelete(message)}
+  className="rounded-xl bg-[#5a4a42] px-4 py-2 text-sm text-white transition hover:bg-[#473a34]"
+>
+  Delete
+</button>
 
                     </div>
 
@@ -270,6 +276,48 @@ async function handleDelete(id){
         </div>
 
       )}
+      {messageToDelete && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-xl">
+
+      <p className="text-xs uppercase tracking-[0.3em] text-[#c2a67a]">
+        Delete Message
+      </p>
+
+      <h2 className="mt-2 font-serif text-3xl text-[#5a4a42]">
+        Are you sure?
+      </h2>
+
+      <p className="mt-4 text-[#7a6a61]">
+        This will permanently delete the message from
+        <span className="font-medium text-[#5a4a42]">
+          {" "}{messageToDelete.name}
+        </span>.
+      </p>
+
+      <div className="mt-8 flex justify-end gap-3">
+
+        <button
+          onClick={() => setMessageToDelete(null)}
+          disabled={deleting}
+          className="rounded-xl border border-[#c2a67a] px-5 py-3 text-[#5a4a42] transition hover:bg-[#f8f5f2]"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={confirmDelete}
+          disabled={deleting}
+          className="rounded-xl bg-red-500 px-5 py-3 text-white transition hover:bg-red-600 disabled:opacity-50"
+        >
+          {deleting ? "Deleting..." : "Delete"}
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+)}
 
 
     </AdminLayout>
