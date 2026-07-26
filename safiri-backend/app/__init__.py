@@ -20,7 +20,13 @@ def create_app():
     jwt.init_app(app)
 
     # enable CORS for all routes
-    CORS(app, resources={r"/*": {"origins": "*"}})
+    CORS(
+        app,
+        origins=[
+            "http://localhost:5173",
+            "https://safiri-gems.onrender.com"
+        ]
+    )
 
     # register blueprint
     # app.register_blueprint(student_bp)
