@@ -128,33 +128,33 @@ function Cart() {
 
 
     const message = `
-Hello Safiri Gems.%0A%0A
+          Hello Safiri Gems.%0A%0A
 
-I have placed an order.%0A%0A
+          I have placed an order.%0A%0A
 
-Order Number:
-${orderNumber}%0A
+          Order Number:
+          ${orderNumber}%0A
 
-Name:
-${customer.name}%0A
+          Name:
+          ${customer.name}%0A
 
-Phone:
-${customer.phone}%0A
+          Phone:
+          ${customer.phone}%0A
 
-Delivery Location:
-${customer.location}%0A
+          Delivery Location:
+          ${customer.location}%0A
 
-Items:%0A
-${orderItems}%0A%0A
+          Items:%0A
+          ${orderItems}%0A%0A
 
-Total:
-KSh ${cartTotal.toLocaleString()}%0A%0A
+          Total:
+          KSh ${cartTotal.toLocaleString()}%0A%0A
 
-M-Pesa Reference:
-${customer.mpesaReference}%0A%0A
+          M-Pesa Reference:
+          ${customer.mpesaReference}%0A%0A
 
-Thank you.
-`;
+          Thank you.
+          `;
 
 
 

@@ -1,3 +1,4 @@
+import os
 from app import create_app
 from app.db import db
 
@@ -21,10 +22,10 @@ with app.app_context():
 
     admin = Admin(
         username="admin",
-        email="admin@safirigems.com"
+        email="ADMIN_EMAIL"  # Replace with your desired admin email
     )
 
-    admin.set_password("admin123")
+    admin.set_password("ADMIN_PASSWORD")  # Replace with your desired admin password
 
     db.session.add(admin)
 
